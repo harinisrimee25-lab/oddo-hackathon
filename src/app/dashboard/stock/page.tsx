@@ -92,7 +92,7 @@ import { Badge } from "@/components/ui/badge";
     )
   }
   
-  export default function StockPage() {
+  function StockPageContent() {
     const searchParams = useSearchParams();
     const filter = searchParams.get('filter');
 
@@ -120,4 +120,10 @@ import { Badge } from "@/components/ui/badge";
     )
   }
 
-
+  export default function StockPage() {
+    return (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <StockPageContent />
+      </React.Suspense>
+    )
+  }

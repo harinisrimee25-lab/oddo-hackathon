@@ -12,72 +12,72 @@ import { Button } from '@/components/ui/button';
 export default function DashboardPage() {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Link href="/dashboard/receipts" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
-        <Card>
+      <Link href="/dashboard/receipts" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg group">
+        <Card className="transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total Receipts
             </CardTitle>
-            <Receipt className="h-4 w-4 text-muted-foreground" />
+            <Receipt className="h-4 w-4 text-muted-foreground group-hover:text-accent-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">125</div>
-            <p className="text-xs text-muted-foreground">2 pending</p>
+            <p className="text-xs text-muted-foreground group-hover:text-accent-foreground">2 pending</p>
           </CardContent>
         </Card>
       </Link>
-      <Link href="/dashboard/deliveries" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
-        <Card>
+      <Link href="/dashboard/deliveries" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg group">
+        <Card className="transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total Deliveries
             </CardTitle>
-            <Truck className="h-4 w-4 text-muted-foreground" />
+            <Truck className="h-4 w-4 text-muted-foreground group-hover:text-accent-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">45</div>
-            <p className="text-xs text-muted-foreground">5 in transit</p>
+            <p className="text-xs text-muted-foreground group-hover:text-accent-foreground">5 in transit</p>
           </CardContent>
         </Card>
       </Link>
-      <Link href="/dashboard/stock?filter=in-stock" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
-        <Card>
+      <Link href="/dashboard/stock?filter=in-stock" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg group">
+        <Card className="transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Stock</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
+            <Package className="h-4 w-4 text-muted-foreground group-hover:text-accent-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">455</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground group-hover:text-accent-foreground">
               5 products
             </p>
           </CardContent>
         </Card>
       </Link>
-      <Link href="/dashboard/stock?filter=out-of-stock" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
-        <Card>
+      <Link href="/dashboard/stock?filter=out-of-stock" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg group">
+        <Card className="transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Out of Stock</CardTitle>
-            <PackageX className="h-4 w-4 text-muted-foreground" />
+            <PackageX className="h-4 w-4 text-muted-foreground group-hover:text-accent-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">2</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground group-hover:text-accent-foreground">
               Products to restock
             </p>
           </CardContent>
         </Card>
       </Link>
-      <Link href="/dashboard/internal-transfers" className="col-span-1 md:col-span-2 lg:col-span-4 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
-        <Card>
+      <Link href="/dashboard/internal-transfers" className="col-span-1 md:col-span-2 lg:col-span-4 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg group">
+        <Card className="transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Scheduled Internal Transfer
               </CardTitle>
-              <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />
+              <ArrowRightLeft className="h-4 w-4 text-muted-foreground group-hover:text-accent-foreground" />
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground mb-4">
+              <p className="text-xs text-muted-foreground mb-4 group-hover:text-accent-foreground">
                 Manage and schedule stock movements between your warehouses.
               </p>
             </CardContent>

@@ -20,30 +20,35 @@ import {
       perUnitCost: 1200,
       onHand: 50,
       freeToUse: 45,
+      barCodeNumber: "8901234567890",
     },
     {
       product: "Wireless Mouse",
       perUnitCost: 25,
       onHand: 200,
       freeToUse: 180,
+      barCodeNumber: "8901234567906",
     },
     {
       product: "Mechanical Keyboard",
       perUnitCost: 150,
       onHand: 75,
       freeToUse: 60,
+      barCodeNumber: "8901234567913",
     },
     {
       product: "4K Monitor",
       perUnitCost: 450,
       onHand: 30,
       freeToUse: 25,
+      barCodeNumber: "8901234567920",
     },
     {
       product: "Webcam HD",
       perUnitCost: 80,
       onHand: 100,
       freeToUse: 90,
+      barCodeNumber: "8901234567937",
     },
   ]
   
@@ -61,6 +66,7 @@ import {
             <TableHeader>
               <TableRow>
                 <TableHead>Product</TableHead>
+                <TableHead>Barcode Number</TableHead>
                 <TableHead className="text-right">Per Unit Cost</TableHead>
                 <TableHead className="text-right">On Hand</TableHead>
                 <TableHead className="text-right">Free to Use</TableHead>
@@ -70,6 +76,7 @@ import {
               {products.map((item) => (
                 <TableRow key={item.product}>
                   <TableCell className="font-medium">{item.product}</TableCell>
+                  <TableCell>{item.barCodeNumber}</TableCell>
                   <TableCell className="text-right">${item.perUnitCost.toFixed(2)}</TableCell>
                   <TableCell className="text-right">{item.onHand}</TableCell>
                   <TableCell className="text-right">{item.freeToUse}</TableCell>
@@ -81,4 +88,3 @@ import {
       </Card>
     )
   }
-  

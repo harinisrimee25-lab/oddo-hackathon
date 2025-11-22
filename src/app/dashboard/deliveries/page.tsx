@@ -17,16 +17,18 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react';
+import { Filter, PlusCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { NewDeliveryForm } from '@/components/dashboard/new-delivery-form';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const initialDeliveriesData = [
   {
@@ -60,6 +62,7 @@ const initialDeliveriesData = [
 ];
 
 type Delivery = typeof initialDeliveriesData[0];
+type DeliveryStatus = 'Pending' | 'Shipped' | 'Delivered' | 'All';
 
 function DeliveryTable({ deliveries }: { deliveries: Delivery[] }) {
     return (
@@ -75,7 +78,7 @@ function DeliveryTable({ deliveries }: { deliveries: Delivery[] }) {
             </TableHeader>
             <TableBody>
                 {deliveries.map((item) => (
-                    <TableRow key={item.productName}>
+                    <TableRow key={item.productName + item.deliveryStatus + item.totalAmount}>
                         <TableCell className="font-medium">{item.productName}</TableCell>
                         <TableCell className="text-right">{item.quantity}</TableCell>
                         <TableCell className="text-right">
@@ -107,13 +110,12 @@ function DeliveryTable({ deliveries }: { deliveries: Delivery[] }) {
 export default function DeliveriesPage() {
   const [deliveriesData, setDeliveriesData] = React.useState(initialDeliveriesData);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [filterStatus, setFilterStatus] = React.useState<DeliveryStatus>('All');
 
-  const pendingDeliveries = deliveriesData.filter(
-    (d) => d.deliveryStatus === 'Pending' || d.deliveryStatus === 'Shipped'
-  );
-  const deliveredDeliveries = deliveriesData.filter(
-    (d) => d.deliveryStatus === 'Delivered'
-  );
+  const filteredDeliveries = deliveriesData.filter((d) => {
+    if (filterStatus === 'All') return true;
+    return d.deliveryStatus === filterStatus;
+  });
 
   const handleAddDelivery = (newDelivery: Omit<Delivery, 'totalAmount' | 'deliveryStatus'>) => {
     const deliveryWithTotal = {
@@ -135,35 +137,44 @@ export default function DeliveriesPage() {
                 Track outgoing shipments and their status.
                 </CardDescription>
             </div>
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                    <Button>
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        New Delivery
-                    </Button>
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Create New Delivery</DialogTitle>
-                    </DialogHeader>
-                    <NewDeliveryForm onAddDelivery={handleAddDelivery} />
-                </DialogContent>
-            </Dialog>
+            <div className='flex items-center gap-2'>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline">
+                            <Filter className="mr-2 h-4 w-4" />
+                            Filter ({filterStatus})
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuRadioGroup value={filterStatus} onValueChange={(value) => setFilterStatus(value as DeliveryStatus)}>
+                            <DropdownMenuRadioItem value="All">All</DropdownMenuRadioItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuRadioItem value="Pending">Pending</DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value="Shipped">Shipped</DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value="Delivered">Delivered</DropdownMenuRadioItem>
+                        </DropdownMenuRadioGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogTrigger asChild>
+                        <Button>
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            New Delivery
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Create New Delivery</DialogTitle>
+                        </DialogHeader>
+                        <NewDeliveryForm onAddDelivery={handleAddDelivery} />
+                    </DialogContent>
+                </Dialog>
+            </div>
         </div>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="pending">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="pending">Pending</TabsTrigger>
-            <TabsTrigger value="delivered">Delivered</TabsTrigger>
-          </TabsList>
-          <TabsContent value="pending">
-            <DeliveryTable deliveries={pendingDeliveries} />
-          </TabsContent>
-          <TabsContent value="delivered">
-            <DeliveryTable deliveries={deliveredDeliveries} />
-          </TabsContent>
-        </Tabs>
+        <DeliveryTable deliveries={filteredDeliveries} />
       </CardContent>
     </Card>
   );

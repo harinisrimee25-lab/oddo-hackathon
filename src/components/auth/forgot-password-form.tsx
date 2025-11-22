@@ -5,7 +5,7 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Loader2, Mail, CheckCircle, KeyRound } from "lucide-react";
+import { Loader2, Mail, CheckCircle, TrendingUp } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -57,8 +57,8 @@ export function ForgotPasswordForm() {
     <Card className="mx-auto max-w-sm w-full">
       <CardHeader className="text-center">
         <div className="flex justify-center items-center gap-2 mb-2">
-            <KeyRound className="h-8 w-8 text-primary" />
-            <CardTitle className="text-3xl font-bold font-headline">AccessKey</CardTitle>
+            <TrendingUp className="h-8 w-8 text-primary" />
+            <CardTitle className="text-3xl font-bold font-headline">Stock Master</CardTitle>
         </div>
         {!isSuccess ? (
           <>

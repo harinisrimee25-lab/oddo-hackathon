@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'AccessKey',
+  title: 'Stock Master',
   description: 'Securely login to your account.',
 };
 

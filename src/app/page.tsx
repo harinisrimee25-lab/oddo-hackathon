@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { KeyRound } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
 import { LoginForm } from "@/components/auth/login-form";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -13,8 +13,8 @@ export default function LoginPage() {
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
             <div className="flex justify-center items-center gap-2">
-                <KeyRound className="h-8 w-8 text-primary" />
-                <h1 className="text-3xl font-bold font-headline">AccessKey</h1>
+                <TrendingUp className="h-8 w-8 text-primary" />
+                <h1 className="text-3xl font-bold font-headline">Stock Master</h1>
             </div>
             <p className="text-balance text-muted-foreground">
               Enter your email below to login to your account

@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import * as React from 'react';
@@ -8,7 +9,7 @@ import * as z from 'zod';
 import { Loader2, Edit, Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ReferenceLine, Cell } from "recharts"
 
 import { Button } from '@/components/ui/button';
 import {
@@ -89,7 +90,7 @@ const chartData = {
 const chartConfig = {
     profit: {
         label: "Profit",
-        color: "hsl(var(--chart-1))",
+        color: "hsl(var(--success))",
     },
     loss: {
         label: "Loss",
@@ -167,13 +168,13 @@ function CompanyProgressChart() {
                                     )
                                 }}
                             />}
-                        />
-                         <ReferenceLine y={0} stroke="hsl(var(--foreground))" strokeWidth={1} />
+                         />
+                        <ReferenceLine y={0} stroke="hsl(var(--foreground))" strokeWidth={1} />
                         <Bar dataKey="profit" radius={4}>
                             {currentData.map((d, index) => (
-                                <rect
+                                <Cell
                                     key={index}
-                                    fill={d.profit >= 0 ? "hsl(var(--chart-1))" : "hsl(var(--destructive))"}
+                                    fill={d.profit >= 0 ? "hsl(var(--success))" : "hsl(var(--destructive))"}
                                 />
                             ))}
                         </Bar>
@@ -356,7 +357,3 @@ export default function ProfilePage() {
         </Suspense>
     )
 }
-
-    
-
-    

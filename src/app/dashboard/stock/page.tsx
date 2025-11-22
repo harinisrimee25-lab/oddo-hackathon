@@ -102,6 +102,22 @@ import { useSearchParams } from "next/navigation";
 
     const defaultValue = filter === 'out-of-stock' ? 'out-of-stock' : 'in-stock';
 
+    if (filter) {
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle>Product Stock</CardTitle>
+                    <CardDescription>
+                        {filter === 'in-stock' ? 'An overview of your current in-stock items.' : 'A list of all out-of-stock items.'}
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <ProductStockTable products={filter === 'in-stock' ? inStockProducts : outOfStockProducts} />
+                </CardContent>
+            </Card>
+        );
+    }
+
     return (
       <Card>
         <CardHeader>

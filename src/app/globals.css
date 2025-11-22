@@ -8,77 +8,76 @@ body {
 
 @layer base {
   :root {
-    --background: 35 15% 95%; /* Light Beige */
-    --foreground: 25 15% 15%; /* Dark Brown */
-    --card: 35 15% 98%; /* Lighter Beige */
-    --card-foreground: 25 15% 15%;
-    --popover: 35 15% 98%;
-    --popover-foreground: 25 15% 15%;
-    --primary: 25 65% 35%; /* Rich Brown */
-    --primary-foreground: 45 30% 95%; /* Light Cream */
-    --secondary: 35 20% 90%; /* Soft Beige */
-    --secondary-foreground: 25 15% 15%;
-    --muted: 35 20% 90%;
-    --muted-foreground: 25 15% 45%;
-    --accent: 35 30% 85%; /* Muted Beige */
-    --accent-foreground: 25 15% 15%;
+    --background: 210 10% 23%; /* Charcoal */
+    --foreground: 0 0% 98%; /* White */
+    --card: 210 10% 28%; /* Darker Charcoal */
+    --card-foreground: 0 0% 98%;
+    --popover: 210 10% 23%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 210 90% 60%; /* Bright Blue */
+    --primary-foreground: 210 10% 15%; /* Dark Blue for text */
+    --secondary: 210 10% 35%; /* Lighter Charcoal */
+    --secondary-foreground: 0 0% 98%;
+    --muted: 210 10% 35%;
+    --muted-foreground: 210 10% 75%; /* Light gray text */
+    --accent: 210 10% 40%; /* Highlight charcoal */
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --success: 142.1 76.2% 36.3%;
     --success-foreground: 142.1 76.2% 96.3%;
-    --border: 35 15% 85%;
-    --input: 35 15% 85%;
-    --ring: 25 65% 35%;
-    --chart-1: 25 70% 45%;
-    --chart-2: 35 60% 55%;
-    --chart-3: 15 50% 50%;
-    --chart-4: 45 70% 60%;
-    --chart-5: 20 80% 55%;
-    --radius: 0.5rem;
-    --sidebar-background: 200 80% 90%; /* Sky Blue */
-    --sidebar-foreground: 210 30% 20%; /* Dark Slate Blue */
-    --sidebar-primary: 210 70% 50%; /* Brighter Blue */
-    --sidebar-primary-foreground: 210 30% 95%; /* Very Light Blue for text */
-    --sidebar-accent: 200 80% 85%; /* Lighter Sky Blue for hover */
-    --sidebar-accent-foreground: 210 30% 15%; /* Darker Slate Blue for text on hover */
-    --sidebar-border: 200 80% 85%;
-    --sidebar-ring: 210 70% 50%;
+    --border: 210 10% 40%;
+    --input: 210 10% 40%;
+    --ring: 210 90% 60%;
+    --chart-1: 210 80% 55%;
+    --chart-2: 180 70% 50%;
+    --chart-3: 160 60% 45%;
+    --chart-4: 140 75% 58%;
+    --chart-5: 200 85% 60%;
+    --sidebar-background: 210 10% 18%; /* Even Darker Charcoal */
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 210 90% 60%;
+    --sidebar-primary-foreground: 210 10% 15%;
+    --sidebar-accent: 210 10% 30%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 210 10% 30%;
+    --sidebar-ring: 210 90% 60%;
   }
   .dark {
-    --background: 25 15% 10%; /* Very Dark Brown */
-    --foreground: 35 15% 90%; /* Off-white */
-    --card: 25 15% 15%; /* Dark Brown */
-    --card-foreground: 35 15% 90%;
-    --popover: 25 15% 10%;
-    --popover-foreground: 35 15% 90%;
-    --primary: 35 80% 60%; /* Tan */
-    --primary-foreground: 25 65% 15%; /* Dark Brown for text on primary */
-    --secondary: 25 15% 20%; /* Darker Brown */
-    --secondary-foreground: 35 15% 90%;
-    --muted: 25 15% 20%;
-    --muted-foreground: 35 15% 60%;
-    --accent: 25 15% 25%; /* Another shade of dark brown */
-    --accent-foreground: 35 15% 90%;
+    --background: 210 10% 23%; /* Charcoal */
+    --foreground: 0 0% 98%; /* White */
+    --card: 210 10% 28%; /* Darker Charcoal */
+    --card-foreground: 0 0% 98%;
+    --popover: 210 10% 23%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 210 90% 60%; /* Bright Blue */
+    --primary-foreground: 210 10% 15%; /* Dark Blue for text */
+    --secondary: 210 10% 35%; /* Lighter Charcoal */
+    --secondary-foreground: 0 0% 98%;
+    --muted: 210 10% 35%;
+    --muted-foreground: 210 10% 75%; /* Light gray text */
+    --accent: 210 10% 40%; /* Highlight charcoal */
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --success: 142.1 76.2% 36.3%;
     --success-foreground: 142.1 76.2% 96.3%;
-    --border: 25 15% 25%;
-    --input: 25 15% 25%;
-    --ring: 35 80% 60%;
-    --chart-1: 35 70% 50%;
-    --chart-2: 25 60% 45%;
-    --chart-3: 15 80% 55%;
-    --chart-4: 45 65% 60%;
-    --chart-5: 20 75% 55%;
-    --sidebar-background: 210 40% 15%; /* Deep Sky Blue */
-    --sidebar-foreground: 200 30% 85%; /* Light Blue-Gray Text */
-    --sidebar-primary: 200 70% 60%; /* Bright Sky Blue Accent */
-    --sidebar-primary-foreground: 210 40% 10%;
-    --sidebar-accent: 210 40% 25%; /* Slightly lighter blue for hover */
-    --sidebar-accent-foreground: 200 30% 90%;
-    --sidebar-border: 210 40% 10%;
-    --sidebar-ring: 200 70% 60%;
+    --border: 210 10% 40%;
+    --input: 210 10% 40%;
+    --ring: 210 90% 60%;
+    --chart-1: 210 80% 55%;
+    --chart-2: 180 70% 50%;
+    --chart-3: 160 60% 45%;
+    --chart-4: 140 75% 58%;
+    --chart-5: 200 85% 60%;
+    --sidebar-background: 210 10% 18%; /* Even Darker Charcoal */
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 210 90% 60%;
+    --sidebar-primary-foreground: 210 10% 15%;
+    --sidebar-accent: 210 10% 30%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 210 10% 30%;
+    --sidebar-ring: 210 90% 60%;
   }
 }
 

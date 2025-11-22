@@ -91,7 +91,7 @@ function DeliveryTable({ deliveries }: { deliveries: Delivery[] }) {
                                         ? 'default'
                                         : item.deliveryStatus === 'Shipped'
                                             ? 'success'
-                                            : 'outline'
+                                            : 'destructive'
                                 }
                             >
                                 {item.deliveryStatus}

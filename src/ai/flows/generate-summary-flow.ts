@@ -16,7 +16,7 @@ const ProfitLossEntrySchema = z.object({
   profit: z.number(),
 });
 
-export const GenerateFinancialSummaryInputSchema = z.record(
+const GenerateFinancialSummaryInputSchema = z.record(
   z.string(),
   z.array(ProfitLossEntrySchema)
 );
@@ -28,7 +28,7 @@ const WarehouseSummarySchema = z.object({
   summary: z.string().describe('A 2-3 sentence summary of the financial performance for this warehouse, highlighting trends, best/worst days, and any anomalies.'),
 });
 
-export const GenerateFinancialSummaryOutputSchema = z.object({
+const GenerateFinancialSummaryOutputSchema = z.object({
   overallSummary: z.string().describe('A 3-4 sentence high-level summary of the entire business\'s weekly performance across all warehouses.'),
   totalProfit: z.number().describe('The total combined profit from all warehouses.'),
   bestPerformingWarehouse: z.string().describe('The name of the warehouse with the highest total profit.'),

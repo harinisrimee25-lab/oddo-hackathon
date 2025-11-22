@@ -23,7 +23,6 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 
@@ -74,7 +73,6 @@ function InternalTransferTable({ data }: { data: InternalTransfer[] }) {
           <TableHead>To Warehouse</TableHead>
           <TableHead className="text-right">Quantity</TableHead>
           <TableHead>Scheduled Date</TableHead>
-          <TableHead className="text-center">Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -85,17 +83,6 @@ function InternalTransferTable({ data }: { data: InternalTransfer[] }) {
             <TableCell>{item.toWarehouse}</TableCell>
             <TableCell className="text-right">{item.quantity}</TableCell>
             <TableCell>{item.scheduledDate}</TableCell>
-            <TableCell className="text-center">
-              <Badge
-                variant={
-                  item.status === 'Completed'
-                    ? 'success'
-                    : 'outline'
-                }
-              >
-                {item.status}
-              </Badge>
-            </TableCell>
           </TableRow>
         ))}
       </TableBody>

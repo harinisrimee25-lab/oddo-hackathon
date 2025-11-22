@@ -9,8 +9,6 @@ import {
 import Link from 'next/link';
 import { Receipt, Truck, Package, PackageX, ArrowRightLeft, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Progress } from '@/components/ui/progress';
 
 export default function DashboardPage() {
   return (

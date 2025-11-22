@@ -103,7 +103,7 @@ export default function DashboardLayout({
     >
       <div
         className={cn(
-          'hidden border-r bg-background md:block transition-all',
+          'hidden border-r bg-sidebar text-sidebar-foreground md:block transition-all',
           isSidebarOpen ? 'w-full' : 'w-[68px]'
         )}
       >
@@ -112,7 +112,7 @@ export default function DashboardLayout({
             'flex h-full max-h-screen flex-col gap-2',
           )}
         >
-          <div className={cn("flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6", isSidebarOpen ? "justify-start" : "justify-center")}>
+          <div className={cn("flex h-14 items-center border-b border-sidebar-border px-4 lg:h-[60px] lg:px-6", isSidebarOpen ? "justify-start" : "justify-center")}>
             <Button
               variant="outline"
               size="icon"
@@ -371,7 +371,9 @@ export default function DashboardLayout({
                   <Link href="/dashboard/profile">My Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/support" target="_blank" rel="noopener noreferrer">Support</Link>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={handleLogout}>Logout</DropdownMenuItem>
               </DropdownMenuContent>

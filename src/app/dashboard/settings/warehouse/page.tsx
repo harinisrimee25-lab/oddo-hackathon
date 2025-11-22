@@ -1,4 +1,7 @@
 
+'use client';
+
+import * as React from 'react';
 import {
     Card,
     CardContent,
@@ -14,8 +17,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { PlusCircle } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { NewWarehouseForm } from '@/components/dashboard/new-warehouse-form';
 
-const warehouseData = [
+const initialWarehouseData = [
     {
         warehouseNumber: 'WH-001',
         name: 'Main Warehouse',
@@ -32,15 +39,43 @@ const warehouseData = [
         location: 'California, USA',
     },
 ];
+
+type Warehouse = typeof initialWarehouseData[0];
   
 export default function WarehouseSettingsPage() {
+    const [warehouseData, setWarehouseData] = React.useState(initialWarehouseData);
+    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+
+    const handleAddWarehouse = (newWarehouse: Warehouse) => {
+        setWarehouseData((prev) => [...prev, newWarehouse]);
+        setIsDialogOpen(false);
+    };
+
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Warehouse Settings</CardTitle>
-                <CardDescription>
-                    Manage your warehouse configurations.
-                </CardDescription>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <CardTitle>Warehouse Settings</CardTitle>
+                        <CardDescription>
+                            Manage your warehouse configurations.
+                        </CardDescription>
+                    </div>
+                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                        <DialogTrigger asChild>
+                            <Button>
+                                <PlusCircle className="mr-2 h-4 w-4" />
+                                New Warehouse
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Create New Warehouse</DialogTitle>
+                            </DialogHeader>
+                            <NewWarehouseForm onAddWarehouse={handleAddWarehouse} />
+                        </DialogContent>
+                    </Dialog>
+                </div>
             </CardHeader>
             <CardContent>
                 <Table>

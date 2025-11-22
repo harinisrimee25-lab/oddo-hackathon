@@ -117,13 +117,6 @@ export default function DashboardPage() {
               <p className="text-xl font-bold">$89.90</p>
             </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between text-sm">
-                <p className="text-muted-foreground">Satisfaction Rate</p>
-                <p className="font-semibold">75%</p>
-            </div>
-            <Progress value={75} aria-label="75% satisfaction rate" />
-          </div>
           <div className="flex items-center justify-between">
             <div className="flex -space-x-2">
               <Avatar className="h-8 w-8 border-2 border-card">
@@ -143,7 +136,9 @@ export default function DashboardPage() {
               </Avatar>
             </div>
             <p className="text-sm text-muted-foreground">5 days ago</p>
-             <Button variant="outline">View Summary</Button>
+             <Link href="/dashboard/profile">
+                <Button variant="outline">View Summary</Button>
+            </Link>
           </div>
         </CardContent>
       </Card>

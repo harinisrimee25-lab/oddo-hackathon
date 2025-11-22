@@ -21,6 +21,7 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
   
   const allProducts = [
     {
@@ -101,6 +102,18 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenu
     const urlFilter = searchParams.get('filter') as StockStatus | null;
     
     const [filter, setFilter] = useState<StockStatus>(urlFilter || 'all');
+    const { toast } = useToast();
+
+    useEffect(() => {
+        const outOfStockProducts = allProducts.filter(p => p.onHand === 0);
+        outOfStockProducts.forEach(p => {
+            toast({
+                variant: 'destructive',
+                title: 'Out of Stock Alert',
+                description: `${p.product} is now out of stock.`,
+            })
+        })
+    }, [toast]);
 
     useEffect(() => {
         if (urlFilter) {
@@ -163,4 +176,3 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenu
       </Suspense>
     )
   }
-

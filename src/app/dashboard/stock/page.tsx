@@ -81,7 +81,7 @@ import { Badge } from "@/components/ui/badge";
                   <TableCell className="text-right">{item.onHand}</TableCell>
                   <TableCell className="text-right">{item.freeToUse}</TableCell>
                   <TableCell className="text-center">
-                    <Badge variant={item.onHand > 0 ? 'default' : 'destructive'}>
+                    <Badge variant={item.onHand > 0 ? 'success' : 'destructive'}>
                       {item.onHand > 0 ? 'In Stock' : 'Out of Stock'}
                     </Badge>
                   </TableCell>
@@ -119,4 +119,5 @@ import { Badge } from "@/components/ui/badge";
       </Card>
     )
   }
+
 

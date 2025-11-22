@@ -35,14 +35,14 @@ body {
     --chart-4: 45 70% 60%;
     --chart-5: 20 80% 55%;
     --radius: 0.5rem;
-    --sidebar-background: 25 65% 25%; /* Deep Brown */
-    --sidebar-foreground: 45 30% 90%; /* Light Cream Text */
-    --sidebar-primary: 35 80% 60%; /* Tan Accent */
-    --sidebar-primary-foreground: 25 65% 15%; /* Dark Brown for text on accent */
-    --sidebar-accent: 25 65% 30%; /* Slightly lighter brown for hover */
-    --sidebar-accent-foreground: 45 30% 95%; /* Light Cream for text on hover */
-    --sidebar-border: 25 65% 20%;
-    --sidebar-ring: 35 80% 60%;
+    --sidebar-background: 140 50% 25%; /* Deep Green */
+    --sidebar-foreground: 140 10% 90%; /* Light Mint */
+    --sidebar-primary: 140 60% 50%; /* Bright Green */
+    --sidebar-primary-foreground: 140 50% 10%; /* Dark Green for text */
+    --sidebar-accent: 140 50% 30%; /* Lighter green for hover */
+    --sidebar-accent-foreground: 140 10% 95%; /* Light Mint for text on hover */
+    --sidebar-border: 140 50% 20%;
+    --sidebar-ring: 140 60% 50%;
   }
   .dark {
     --background: 25 15% 10%; /* Very Dark Brown */
@@ -71,14 +71,14 @@ body {
     --chart-3: 15 80% 55%;
     --chart-4: 45 65% 60%;
     --chart-5: 20 75% 55%;
-    --sidebar-background: 25 65% 15%; /* Even Deeper Brown */
-    --sidebar-foreground: 45 30% 85%; /* Lighter Cream Text */
-    --sidebar-primary: 35 80% 60%; /* Tan Accent */
-    --sidebar-primary-foreground: 25 65% 15%;
-    --sidebar-accent: 25 65% 20%; /* Slightly lighter brown for hover */
-    --sidebar-accent-foreground: 45 30% 90%;
-    --sidebar-border: 25 65% 10%;
-    --sidebar-ring: 35 80% 60%;
+    --sidebar-background: 140 50% 10%; /* Even Deeper Green */
+    --sidebar-foreground: 140 10% 85%; /* Lighter Mint Text */
+    --sidebar-primary: 140 60% 50%; /* Bright Green Accent */
+    --sidebar-primary-foreground: 140 50% 10%;
+    --sidebar-accent: 140 50% 15%; /* Slightly lighter green for hover */
+    --sidebar-accent-foreground: 140 10% 90%;
+    --sidebar-border: 140 50% 5%;
+    --sidebar-ring: 140 60% 50%;
   }
 }
 

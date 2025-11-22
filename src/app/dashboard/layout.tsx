@@ -22,6 +22,7 @@ import {
   Moon,
   Sun,
   DollarSign,
+  FileText,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -232,6 +233,13 @@ export default function DashboardLayout({
                 {isSidebarOpen && 'Move History'}
               </Link>
               <Link
+                href="/dashboard/summary"
+                className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isActive('/dashboard/summary') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
+              >
+                <FileText className="h-4 w-4" />
+                {isSidebarOpen && 'Financial Summary'}
+              </Link>
+              <Link
                 href="/dashboard/profile"
                 className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isActive('/dashboard/profile') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
               >
@@ -360,6 +368,13 @@ export default function DashboardLayout({
                 >
                   <History className="h-5 w-5" />
                   Move History
+                </Link>
+                <Link
+                  href="/dashboard/summary"
+                  className={cn("mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground", isActive('/dashboard/summary') && 'text-foreground bg-muted')}
+                >
+                  <FileText className="h-5 w-5" />
+                  Financial Summary
                 </Link>
                  <Link
                   href="/dashboard/profile"

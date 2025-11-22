@@ -116,7 +116,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex items-center justify-end">
-             <Link href="/dashboard/profile">
+             <Link href="/dashboard/summary">
                 <Button variant="outline">View Summary</Button>
             </Link>
           </div>

@@ -96,10 +96,10 @@ import { PlusCircle } from 'lucide-react';
                     <Badge
                     variant={
                         item.status === 'Completed'
-                        ? 'default'
+                        ? 'success'
                         : item.status === 'In Transit'
                         ? 'secondary'
-                        : 'outline'
+                        : 'destructive'
                     }
                     >
                     {item.status}

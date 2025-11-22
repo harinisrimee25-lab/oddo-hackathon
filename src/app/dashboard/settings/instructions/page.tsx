@@ -13,7 +13,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Badge } from "@/components/ui/badge";
-import { Truck, Receipt, SlidersHorizontal, ArrowRightLeft, Package, History, User, Warehouse, Settings, BarChart2 } from "lucide-react";
+import { Truck, Receipt, SlidersHorizontal, ArrowRightLeft, Package, History, User, Warehouse, Settings, BarChart2, Info } from "lucide-react";
 
 export default function InstructionsPage() {
     return (

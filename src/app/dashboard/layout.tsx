@@ -111,7 +111,7 @@ export default function DashboardLayout({
                       Delivery
                     </Link>
                     <Link
-                      href="#"
+                      href="/dashboard/adjustments"
                       className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                     >
                       <SlidersHorizontal className="h-4 w-4" />
@@ -206,7 +206,7 @@ export default function DashboardLayout({
                         Delivery
                         </Link>
                         <Link
-                        href="#"
+                        href="/dashboard/adjustments"
                         className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                         >
                         <SlidersHorizontal className="h-5 w-5" />

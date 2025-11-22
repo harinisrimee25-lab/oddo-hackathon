@@ -18,6 +18,7 @@ import {
   Warehouse,
   LogOut,
   ArrowRightLeft,
+  Info,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -212,6 +213,13 @@ export default function DashboardLayout({
                       Warehouse
                     </Link>
                     <Link
+                      href="/dashboard/settings/instructions"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <Info className="h-4 w-4" />
+                      Instructions
+                    </Link>
+                    <Link
                       href="/"
                       className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                     >
@@ -332,6 +340,13 @@ export default function DashboardLayout({
                         >
                         <Warehouse className="h-5 w-5" />
                         Warehouse
+                        </Link>
+                        <Link
+                          href="/dashboard/settings/instructions"
+                          className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                        >
+                          <Info className="h-5 w-5" />
+                          Instructions
                         </Link>
                         <Link
                         href="/"

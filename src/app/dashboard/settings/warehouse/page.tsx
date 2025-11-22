@@ -2,7 +2,7 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
     Card,
     CardContent,
@@ -44,7 +44,7 @@ const initialWarehouseData = [
 
 type Warehouse = typeof initialWarehouseData[0];
   
-export default function WarehouseSettingsPage() {
+function WarehouseSettingsPageComponent() {
     const [allWarehouses, setAllWarehouses] = React.useState(initialWarehouseData);
     const [filteredWarehouses, setFilteredWarehouses] = React.useState(initialWarehouseData);
     const [searchTerm, setSearchTerm] = React.useState('');
@@ -137,4 +137,13 @@ export default function WarehouseSettingsPage() {
             </CardContent>
         </Card>
     );
+}
+
+
+export default function WarehouseSettingsPage() {
+    return (
+        <React.Suspense fallback={<div>Loading...</div>}>
+            <WarehouseSettingsPageComponent />
+        </React.Suspense>
+    )
 }

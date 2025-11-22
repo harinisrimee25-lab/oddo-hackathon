@@ -2,6 +2,7 @@
 'use client';
 
 import * as React from 'react';
+import { useRouter } from 'next/navigation';
 import {
     Card,
     CardContent,
@@ -48,6 +49,7 @@ export default function WarehouseSettingsPage() {
     const [filteredWarehouses, setFilteredWarehouses] = React.useState(initialWarehouseData);
     const [searchTerm, setSearchTerm] = React.useState('');
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+    const router = useRouter();
 
     React.useEffect(() => {
         if (!searchTerm) {
@@ -66,6 +68,10 @@ export default function WarehouseSettingsPage() {
     const handleAddWarehouse = (newWarehouse: Warehouse) => {
         setAllWarehouses((prev) => [...prev, newWarehouse]);
         setIsDialogOpen(false);
+    };
+
+    const handleWarehouseClick = (warehouseNumber: string) => {
+        router.push(`/dashboard/settings/warehouse/${warehouseNumber}`);
     };
 
     return (
@@ -116,7 +122,11 @@ export default function WarehouseSettingsPage() {
                     </TableHeader>
                     <TableBody>
                         {filteredWarehouses.map((warehouse) => (
-                            <TableRow key={warehouse.warehouseNumber}>
+                            <TableRow 
+                                key={warehouse.warehouseNumber} 
+                                onClick={() => handleWarehouseClick(warehouse.warehouseNumber)}
+                                className="cursor-pointer"
+                            >
                                 <TableCell className="font-medium">{warehouse.warehouseNumber}</TableCell>
                                 <TableCell>{warehouse.name}</TableCell>
                                 <TableCell>{warehouse.location}</TableCell>

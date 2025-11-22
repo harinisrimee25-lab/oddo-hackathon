@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -47,7 +48,7 @@ export default function DashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold">455</div>
             <p className="text-xs text-muted-foreground">
-              5 products, 2 out of stock
+              5 products
             </p>
           </CardContent>
         </Card>

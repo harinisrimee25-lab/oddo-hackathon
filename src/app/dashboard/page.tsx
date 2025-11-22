@@ -79,10 +79,6 @@ export default function DashboardPage() {
             <p className="text-xs text-muted-foreground mb-4">
               Manage and schedule stock movements between your warehouses.
             </p>
-            <Button>
-                <ArrowRightLeft className="mr-2 h-4 w-4" />
-                New Internal Transfer
-            </Button>
           </CardContent>
         </Card>
     </div>

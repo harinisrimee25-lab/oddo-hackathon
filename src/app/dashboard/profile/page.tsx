@@ -8,7 +8,7 @@ import * as z from 'zod';
 import { Loader2, Edit, Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
-import { Line, LineChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from "recharts"
 
 import { Button } from '@/components/ui/button';
 import {
@@ -91,6 +91,10 @@ const chartConfig = {
         label: "Profit",
         color: "hsl(var(--chart-1))",
     },
+    loss: {
+        label: "Loss",
+        color: "hsl(var(--destructive))",
+    }
 } satisfies ChartConfig
 
 function CompanyProgressChart() {
@@ -125,7 +129,7 @@ function CompanyProgressChart() {
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-                    <LineChart accessibilityLayer data={currentData}>
+                    <AreaChart accessibilityLayer data={currentData}>
                         <CartesianGrid vertical={false} />
                         <XAxis
                             dataKey={dataKey}
@@ -138,7 +142,7 @@ function CompanyProgressChart() {
                                 return value;
                             }}
                         />
-                        <YAxis domain={[0, 'auto']} />
+                        <YAxis />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent 
@@ -154,28 +158,34 @@ function CompanyProgressChart() {
                         />
                         <defs>
                             <linearGradient id="fillNegative" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="hsl(var(--destructive))" stopOpacity={0.8}/>
-                                <stop offset="95%" stopColor="hsl(var(--destructive))" stopOpacity={0.1}/>
+                                <stop offset="5%" stopColor="var(--color-loss)" stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor="var(--color-loss)" stopOpacity={0.1}/>
                             </linearGradient>
                              <linearGradient id="fillPositive" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
-                                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.1}/>
+                                <stop offset="5%" stopColor="var(--color-profit)" stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor="var(--color-profit)" stopOpacity={0.1}/>
                             </linearGradient>
                         </defs>
-                        <Line
+                        <ReferenceLine y={0} stroke="hsl(var(--foreground))" strokeWidth={1} />
+                        <Area
                             dataKey="profit"
                             type="monotone"
-                            stroke="hsl(var(--primary))"
                             strokeWidth={2}
-                            dot={{
-                                fill: "hsl(var(--primary))",
-                                r: 4,
-                            }}
-                            activeDot={{
-                                r: 6,
-                            }}
+                            stackId="a"
+                            stroke="var(--color-profit)"
+                            fill="url(#fillPositive)"
+                            hide={currentData.every(d => d.profit < 0)}
                         />
-                    </LineChart>
+                        <Area
+                            dataKey="profit"
+                            type="monotone"
+                            strokeWidth={2}
+                            stackId="b"
+                            stroke="var(--color-loss)"
+                            fill="url(#fillNegative)"
+                            hide={currentData.every(d => d.profit >= 0)}
+                        />
+                    </AreaChart>
                 </ChartContainer>
             </CardContent>
         </Card>
@@ -354,3 +364,5 @@ export default function ProfilePage() {
         </Suspense>
     )
 }
+
+    

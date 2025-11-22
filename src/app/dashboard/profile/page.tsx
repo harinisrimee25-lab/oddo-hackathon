@@ -8,7 +8,7 @@ import * as z from 'zod';
 import { Loader2, Edit, Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { Line, LineChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import { Button } from '@/components/ui/button';
 import {
@@ -125,7 +125,7 @@ function CompanyProgressChart() {
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-                    <BarChart accessibilityLayer data={currentData}>
+                    <LineChart accessibilityLayer data={currentData}>
                         <CartesianGrid vertical={false} />
                         <XAxis
                             dataKey={dataKey}
@@ -152,18 +152,30 @@ function CompanyProgressChart() {
                                 }}
                             />}
                         />
-                        <Bar 
-                            dataKey="profit" 
-                            fill="var(--color-profit)" 
-                            radius={4} 
-                            // Add a conditional fill for negative values
-                            shape={(props) => {
-                                const { x, y, width, height, payload } = props;
-                                const isNegative = payload.profit < 0;
-                                return <rect x={x} y={isNegative ? y : y - (isNegative ? 0 : height)} width={width} height={Math.abs(height)} fill={isNegative ? "hsl(var(--destructive))" : "hsl(var(--primary))"} rx={4} />;
+                        <defs>
+                            <linearGradient id="fillNegative" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="hsl(var(--destructive))" stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor="hsl(var(--destructive))" stopOpacity={0.1}/>
+                            </linearGradient>
+                             <linearGradient id="fillPositive" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.1}/>
+                            </linearGradient>
+                        </defs>
+                        <Line
+                            dataKey="profit"
+                            type="monotone"
+                            stroke="hsl(var(--primary))"
+                            strokeWidth={2}
+                            dot={{
+                                fill: "hsl(var(--primary))",
+                                r: 4,
+                            }}
+                            activeDot={{
+                                r: 6,
                             }}
                         />
-                    </BarChart>
+                    </LineChart>
                 </ChartContainer>
             </CardContent>
         </Card>

@@ -25,8 +25,10 @@ import {
 } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { NewTransferForm } from '@/components/dashboard/new-transfer-form';
 
-const internalTransfersData = [
+const initialInternalTransfersData = [
   {
     productName: 'Laptop Pro',
     fromWarehouse: 'Main Warehouse',
@@ -61,7 +63,7 @@ const internalTransfersData = [
   },
 ];
 
-type InternalTransfer = typeof internalTransfersData[0];
+export type InternalTransfer = typeof initialInternalTransfersData[0];
 
 function InternalTransferTable({ data }: { data: InternalTransfer[] }) {
   return (
@@ -91,12 +93,25 @@ function InternalTransferTable({ data }: { data: InternalTransfer[] }) {
 }
 
 export default function InternalTransfersPage() {
-  const pendingTransfers = internalTransfersData.filter(
+  const [transfersData, setTransfersData] = React.useState(initialInternalTransfersData);
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+
+  const pendingTransfers = transfersData.filter(
     (t) => t.status === 'Pending'
   );
-  const completedTransfers = internalTransfersData.filter(
+  const completedTransfers = transfersData.filter(
     (t) => t.status === 'Completed'
   );
+
+  const handleAddTransfer = (newTransfer: Omit<InternalTransfer, 'status'>) => {
+    const transferWithStatus = {
+        ...newTransfer,
+        status: 'Pending',
+    } as InternalTransfer;
+
+    setTransfersData(prev => [...prev, transferWithStatus]);
+    setIsDialogOpen(false);
+  };
 
   return (
     <Card>
@@ -108,10 +123,20 @@ export default function InternalTransfersPage() {
               Manage and schedule stock movements between your warehouses.
             </CardDescription>
           </div>
-          <Button>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              New Transfer
-          </Button>
+           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button>
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    New Transfer
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                  <DialogHeader>
+                      <DialogTitle>Create New Transfer</DialogTitle>
+                  </DialogHeader>
+                  <NewTransferForm onAddTransfer={handleAddTransfer} />
+              </DialogContent>
+          </Dialog>
         </div>
       </CardHeader>
       <CardContent>

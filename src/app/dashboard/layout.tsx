@@ -41,6 +41,8 @@ import {
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 export default function DashboardLayout({
   children,
@@ -51,6 +53,8 @@ export default function DashboardLayout({
   const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
   const [userName, setUserName] = React.useState('John Doe');
+  const router = useRouter();
+  const { toast } = useToast();
 
   React.useEffect(() => {
     const storedName = localStorage.getItem('userName');
@@ -65,6 +69,17 @@ export default function DashboardLayout({
       return names[0][0] + names[names.length - 1][0];
     }
     return name.substring(0, 2).toUpperCase();
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    window.dispatchEvent(new Event('storage'));
+    toast({
+        title: 'Logout Successful',
+        description: 'You have been successfully logged out.',
+    });
+    router.push('/');
   };
 
   return (
@@ -348,7 +363,7 @@ export default function DashboardLayout({
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem onSelect={handleLogout}>Logout</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -360,3 +375,5 @@ export default function DashboardLayout({
     </div>
   );
 }
+
+    

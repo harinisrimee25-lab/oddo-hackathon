@@ -87,7 +87,7 @@ export default function DashboardLayout({
                 <CollapsibleContent className="pl-8">
                   <nav className="grid gap-y-2">
                     <Link
-                      href="#"
+                      href="/dashboard/receipts"
                       className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                     >
                       <Receipt className="h-4 w-4" />
@@ -191,7 +191,7 @@ export default function DashboardLayout({
                   <CollapsibleContent className="pl-12">
                       <nav className="grid gap-y-2">
                         <Link
-                        href="#"
+                        href="/dashboard/receipts"
                         className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                         >
                         <Receipt className="h-5 w-5" />

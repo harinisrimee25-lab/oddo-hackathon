@@ -22,7 +22,7 @@ export default function DashboardPage() {
             Manage incoming inventory and process new stock.
           </CardDescription>
           <Button className="mt-4" asChild>
-            <Link href="#">Go to Receipts</Link>
+            <Link href="/dashboard/receipts">Go to Receipts</Link>
           </Button>
         </CardContent>
       </Card>

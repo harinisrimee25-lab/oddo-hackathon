@@ -1,149 +1,214 @@
+
+'use client';
+
+import * as React from 'react';
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-  } from '@/components/ui/card';
-  import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from '@/components/ui/table';
-  import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-  } from '@/components/ui/tabs';
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
-  
-  const salesData = [
-    {
-      productName: 'Laptop Pro',
-      date: '2024-05-15',
-      quantity: 2,
-      pricePerItem: 1200,
-      totalAmount: 2400,
-    },
-    {
-      productName: 'Wireless Mouse',
-      date: '2024-05-16',
-      quantity: 5,
-      pricePerItem: 25,
-      totalAmount: 125,
-    },
-  ];
-  
-  const purchaseData = [
-    {
-      productName: '4K Monitor',
-      date: '2024-05-10',
-      quantity: 10,
-      pricePerItem: 400,
-      totalAmount: 4000,
-    },
-    {
-      productName: 'Mechanical Keyboard',
-      date: '2024-05-11',
-      quantity: 15,
-      pricePerItem: 130,
-      totalAmount: 1950,
-    },
-  ];
-  
-  export default function ReceiptsPage() {
-    return (
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Receipts</CardTitle>
-              <CardDescription>Track sales and purchases.</CardDescription>
-            </div>
-            <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                New Receipt
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="sales">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="sales">Sales</TabsTrigger>
-              <TabsTrigger value="purchase">Purchase</TabsTrigger>
-            </TabsList>
-            <TabsContent value="sales">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Sales</CardTitle>
-                  <CardDescription>Recent sales transactions.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Product Name</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead className="text-right">Quantity</TableHead>
-                        <TableHead className="text-right">Price Per Item</TableHead>
-                        <TableHead className="text-right">Total Amount</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {salesData.map((item) => (
-                        <TableRow key={item.productName}>
-                          <TableCell className="font-medium">{item.productName}</TableCell>
-                          <TableCell>{item.date}</TableCell>
-                          <TableCell className="text-right">{item.quantity}</TableCell>
-                          <TableCell className="text-right">${item.pricePerItem.toFixed(2)}</TableCell>
-                          <TableCell className="text-right">${item.totalAmount.toFixed(2)}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="purchase">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Purchases</CardTitle>
-                  <CardDescription>Recent purchase transactions.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Product Name</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead className="text-right">Quantity</TableHead>
-                        <TableHead className="text-right">Price Per Item</TableHead>
-                        <TableHead className="text-right">Total Amount</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {purchaseData.map((item) => (
-                        <TableRow key={item.productName}>
-                          <TableCell className="font-medium">{item.productName}</TableCell>
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { NewReceiptForm } from '@/components/dashboard/new-receipt-form';
 
-                          <TableCell>{item.date}</TableCell>
-                          <TableCell className="text-right">{item.quantity}</TableCell>
-                          <TableCell className="text-right">${item.pricePerItem.toFixed(2)}</TableCell>
-                          <TableCell className="text-right">${item.totalAmount.toFixed(2)}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
-    );
-  }
+const initialSalesData = [
+  {
+    productName: 'Laptop Pro',
+    date: '2024-05-15',
+    quantity: 2,
+    pricePerItem: 1200,
+    totalAmount: 2400,
+  },
+  {
+    productName: 'Wireless Mouse',
+    date: '2024-05-16',
+    quantity: 5,
+    pricePerItem: 25,
+    totalAmount: 125,
+  },
+];
+
+const initialPurchaseData = [
+  {
+    productName: '4K Monitor',
+    date: '2024-05-10',
+    quantity: 10,
+    pricePerItem: 400,
+    totalAmount: 4000,
+  },
+  {
+    productName: 'Mechanical Keyboard',
+    date: '2024-05-11',
+    quantity: 15,
+    pricePerItem: 130,
+    totalAmount: 1950,
+  },
+];
+
+type Receipt = {
+    productName: string;
+    date: string;
+    quantity: number;
+    pricePerItem: number;
+    totalAmount: number;
+};
+
+export default function ReceiptsPage() {
+    const [salesData, setSalesData] = React.useState(initialSalesData);
+    const [purchaseData, setPurchaseData] = React.useState(initialPurchaseData);
+    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+
+    const handleAddReceipt = (newReceipt: Omit<Receipt, 'totalAmount' | 'date'> & { type: 'sales' | 'purchase' }) => {
+        const receiptWithTotal = {
+            ...newReceipt,
+            date: new Date().toISOString().split('T')[0],
+            totalAmount: newReceipt.quantity * newReceipt.pricePerItem,
+        };
+
+        if (newReceipt.type === 'sales') {
+            setSalesData((prev) => [...prev, receiptWithTotal]);
+        } else {
+            setPurchaseData((prev) => [...prev, receiptWithTotal]);
+        }
+        setIsDialogOpen(false);
+    };
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>Receipts</CardTitle>
+            <CardDescription>Track sales and purchases.</CardDescription>
+          </div>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+                <Button>
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    New Receipt
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Create New Receipt</DialogTitle>
+                </DialogHeader>
+                <NewReceiptForm onAddReceipt={handleAddReceipt} />
+            </DialogContent>
+        </Dialog>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <Tabs defaultValue="sales">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="sales">Sales</TabsTrigger>
+            <TabsTrigger value="purchase">Purchase</TabsTrigger>
+          </TabsList>
+          <TabsContent value="sales">
+            <Card>
+              <CardHeader>
+                <CardTitle>Sales</CardTitle>
+                <CardDescription>Recent sales transactions.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Product Name</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead className="text-right">Quantity</TableHead>
+                      <TableHead className="text-right">
+                        Price Per Item
+                      </TableHead>
+                      <TableHead className="text-right">Total Amount</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {salesData.map((item) => (
+                      <TableRow key={item.productName + item.date}>
+                        <TableCell className="font-medium">
+                          {item.productName}
+                        </TableCell>
+                        <TableCell>{item.date}</TableCell>
+                        <TableCell className="text-right">
+                          {item.quantity}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          ${item.pricePerItem.toFixed(2)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          ${item.totalAmount.toFixed(2)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="purchase">
+            <Card>
+              <CardHeader>
+                <CardTitle>Purchases</CardTitle>
+                <CardDescription>
+                  Recent purchase transactions.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Product Name</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead className="text-right">Quantity</TableHead>
+                      <TableHead className="text-right">
+                        Price Per Item
+                      </TableHead>
+                      <TableHead className="text-right">Total Amount</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {purchaseData.map((item) => (
+                      <TableRow key={item.productName + item.date}>
+                        <TableCell className="font-medium">
+                          {item.productName}
+                        </TableCell>
+
+                        <TableCell>{item.date}</TableCell>
+                        <TableCell className="text-right">
+                          {item.quantity}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          ${item.pricePerItem.toFixed(2)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          ${item.totalAmount.toFixed(2)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
+  );
+}

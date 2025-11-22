@@ -141,6 +141,13 @@ export default function DashboardLayout({
                 {isSidebarOpen && 'Move History'}
               </Link>
               <Link
+                href="/dashboard/profile"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              >
+                <User className="h-4 w-4" />
+                {isSidebarOpen && 'My Profile'}
+              </Link>
+              <Link
                 href="#"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
@@ -243,6 +250,13 @@ export default function DashboardLayout({
                 >
                   <History className="h-5 w-5" />
                   Move History
+                </Link>
+                 <Link
+                  href="/dashboard/profile"
+                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                >
+                  <User className="h-5 w-5" />
+                  My Profile
                 </Link>
                 <Link
                   href="#"

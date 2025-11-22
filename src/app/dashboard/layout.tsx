@@ -21,6 +21,7 @@ import {
   Info,
   Moon,
   Sun,
+  DollarSign,
 } from 'lucide-react';
 import {
   DropdownMenu,

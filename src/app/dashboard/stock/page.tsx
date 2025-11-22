@@ -15,9 +15,10 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
-import React from "react";
+import React, { Suspense } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useSearchParams } from "next/navigation";
   
   const allProducts = [
     {
@@ -92,9 +93,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
     )
   }
   
-  export default function StockPage() {
+  function StockPageComponent() {
+    const searchParams = useSearchParams();
+    const filter = searchParams.get('filter');
+
     const inStockProducts = allProducts.filter(p => p.onHand > 0);
     const outOfStockProducts = allProducts.filter(p => p.onHand === 0);
+
+    const defaultValue = filter === 'out-of-stock' ? 'out-of-stock' : 'in-stock';
 
     return (
       <Card>
@@ -105,7 +111,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
           </CardDescription>
         </CardHeader>
         <CardContent>
-            <Tabs defaultValue="in-stock">
+            <Tabs defaultValue={defaultValue}>
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="in-stock">In Stock</TabsTrigger>
                     <TabsTrigger value="out-of-stock">Out of Stock</TabsTrigger>
@@ -119,5 +125,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
             </Tabs>
         </CardContent>
       </Card>
+    )
+  }
+
+  export default function StockPage() {
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <StockPageComponent />
+      </Suspense>
     )
   }

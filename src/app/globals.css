@@ -35,14 +35,14 @@ body {
     --chart-4: 45 70% 60%;
     --chart-5: 20 80% 55%;
     --radius: 0.5rem;
-    --sidebar-background: 140 50% 25%; /* Deep Green */
-    --sidebar-foreground: 140 10% 90%; /* Light Mint */
-    --sidebar-primary: 140 60% 50%; /* Bright Green */
-    --sidebar-primary-foreground: 140 50% 10%; /* Dark Green for text */
-    --sidebar-accent: 140 50% 30%; /* Lighter green for hover */
-    --sidebar-accent-foreground: 140 10% 95%; /* Light Mint for text on hover */
-    --sidebar-border: 140 50% 20%;
-    --sidebar-ring: 140 60% 50%;
+    --sidebar-background: 220 50% 25%; /* Dark Blue */
+    --sidebar-foreground: 220 15% 90%; /* Light Blue-Gray */
+    --sidebar-primary: 220 60% 60%; /* Bright Blue */
+    --sidebar-primary-foreground: 220 50% 10%; /* Very Dark Blue for text */
+    --sidebar-accent: 220 50% 35%; /* Lighter blue for hover */
+    --sidebar-accent-foreground: 220 15% 95%; /* Off-white for text on hover */
+    --sidebar-border: 220 50% 20%;
+    --sidebar-ring: 220 60% 60%;
   }
   .dark {
     --background: 25 15% 10%; /* Very Dark Brown */
@@ -71,14 +71,14 @@ body {
     --chart-3: 15 80% 55%;
     --chart-4: 45 65% 60%;
     --chart-5: 20 75% 55%;
-    --sidebar-background: 140 50% 10%; /* Even Deeper Green */
-    --sidebar-foreground: 140 10% 85%; /* Lighter Mint Text */
-    --sidebar-primary: 140 60% 50%; /* Bright Green Accent */
-    --sidebar-primary-foreground: 140 50% 10%;
-    --sidebar-accent: 140 50% 15%; /* Slightly lighter green for hover */
-    --sidebar-accent-foreground: 140 10% 90%;
-    --sidebar-border: 140 50% 5%;
-    --sidebar-ring: 140 60% 50%;
+    --sidebar-background: 220 50% 15%; /* Even Deeper Blue */
+    --sidebar-foreground: 220 15% 85%; /* Lighter Blue-Gray Text */
+    --sidebar-primary: 220 60% 60%; /* Bright Blue Accent */
+    --sidebar-primary-foreground: 220 50% 10%;
+    --sidebar-accent: 220 50% 25%; /* Slightly lighter blue for hover */
+    --sidebar-accent-foreground: 220 15% 90%;
+    --sidebar-border: 220 50% 10%;
+    --sidebar-ring: 220 60% 60%;
   }
 }
 

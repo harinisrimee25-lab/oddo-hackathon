@@ -46,7 +46,9 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">455</div>
-            <p className="text-xs text-muted-foreground">5 products</p>
+            <p className="text-xs text-muted-foreground">
+              5 products, 2 out of stock
+            </p>
           </CardContent>
         </Card>
       </Link>

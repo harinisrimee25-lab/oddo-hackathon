@@ -131,9 +131,6 @@ export default function ProfilePage() {
                   ) : (
                     <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
                   )}
-                  <FormDescription>
-                    This is the email address you use to log in.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

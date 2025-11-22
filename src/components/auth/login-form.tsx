@@ -118,14 +118,18 @@ export function LoginForm() {
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  id="terms"
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
                 <Label
                   htmlFor="terms"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm font-medium leading-none"
                 >
-                  Accept all terms and conditions
+                  Accept all {' '}
+                  <Link href="/terms-and-conditions" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+                    terms and conditions
+                  </Link>
                 </Label>
                 <FormMessage />
               </div>

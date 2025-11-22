@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -31,6 +32,7 @@ const formSchema = z.object({
 export function LoginForm() {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,13 +49,12 @@ export function LoginForm() {
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
-      // On successful login, you would typically redirect the user
-      // For this example, we'll just show a success toast.
       toast({
         title: "Login Successful",
         description: "Welcome back!",
       });
-    }, 2000);
+      router.push('/dashboard');
+    }, 1000);
   }
 
   return (

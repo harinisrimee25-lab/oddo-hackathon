@@ -117,25 +117,7 @@ export default function DashboardPage() {
               <p className="text-xl font-bold">$89.90</p>
             </div>
           </div>
-          <div className="flex items-center justify-between">
-            <div className="flex -space-x-2">
-              <Avatar className="h-8 w-8 border-2 border-card">
-                <AvatarImage src="https://picsum.photos/seed/10/40" />
-                <AvatarFallback>U1</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-card">
-                <AvatarImage src="https://picsum.photos/seed/11/40" />
-                <AvatarFallback>U2</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-card">
-                <AvatarImage src="https://picsum.photos/seed/12/40" />
-                <AvatarFallback>U3</AvatarFallback>
-              </Avatar>
-               <Avatar className="h-8 w-8 border-2 border-card">
-                <AvatarFallback>+5</AvatarFallback>
-              </Avatar>
-            </div>
-            <p className="text-sm text-muted-foreground">5 days ago</p>
+          <div className="flex items-center justify-end">
              <Link href="/dashboard/profile">
                 <Button variant="outline">View Summary</Button>
             </Link>

@@ -112,6 +112,15 @@ import { useToast } from "@/hooks/use-toast";
                 title: 'Out of Stock Alert',
                 description: `${p.product} is now out of stock.`,
             })
+        });
+
+        const lowStockProducts = allProducts.filter(p => p.freeToUse > 0 && p.freeToUse < 26);
+        lowStockProducts.forEach(p => {
+            toast({
+                variant: 'destructive',
+                title: 'Low Stock Alert',
+                description: `${p.product} has only ${p.freeToUse} items left in free to use stock.`,
+            })
         })
     }, [toast]);
 

@@ -14,6 +14,8 @@ import {
   SlidersHorizontal,
   Menu,
   User,
+  Warehouse,
+  LogOut,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -44,6 +46,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isOperationsOpen, setIsOperationsOpen] = React.useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
 
   return (
@@ -141,13 +144,33 @@ export default function DashboardLayout({
                 <User className="h-4 w-4" />
                 {isSidebarOpen && 'My Profile'}
               </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Settings className="h-4 w-4" />
-                {isSidebarOpen && 'Settings'}
-              </Link>
+              <Collapsible open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+                <CollapsibleTrigger className="flex items-center justify-between w-full">
+                  <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                    <Settings className="h-4 w-4" />
+                    {isSidebarOpen && 'Settings'}
+                  </div>
+                  {isSidebarOpen && <ChevronDown className={`h-4 w-4 transition-transform ${isSettingsOpen ? 'rotate-180' : ''}`} />}
+                </CollapsibleTrigger>
+                {isSidebarOpen && <CollapsibleContent className="pl-8">
+                  <nav className="grid gap-y-2">
+                    <Link
+                      href="/dashboard/settings/warehouse"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <Warehouse className="h-4 w-4" />
+                      Warehouse
+                    </Link>
+                    <Link
+                      href="/"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Sign Out
+                    </Link>
+                  </nav>
+                </CollapsibleContent>}
+              </Collapsible>
             </nav>
           </div>
         </div>
@@ -207,7 +230,7 @@ export default function DashboardLayout({
                         </Link>
                         <Link
                         href="/dashboard/adjustments"
-                        className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                        className="mx-[-0-65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                         >
                         <SlidersHorizontal className="h-5 w-5" />
                         Adjustments
@@ -236,13 +259,33 @@ export default function DashboardLayout({
                   <User className="h-5 w-5" />
                   My Profile
                 </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Settings className="h-5 w-5" />
-                  Settings
-                </Link>
+                <Collapsible open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+                  <CollapsibleTrigger className="flex items-center justify-between w-full">
+                    <div className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
+                        <Settings className="h-5 w-5" />
+                        Settings
+                    </div>
+                    <ChevronDown className={`h-4 w-4 transition-transform ${isSettingsOpen ? 'rotate-180' : ''}`} />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="pl-12">
+                      <nav className="grid gap-y-2">
+                        <Link
+                        href="/dashboard/settings/warehouse"
+                        className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                        >
+                        <Warehouse className="h-5 w-5" />
+                        Warehouse
+                        </Link>
+                        <Link
+                        href="/"
+                        className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                        >
+                        <LogOut className="h-5 w-5" />
+                        Sign Out
+                        </Link>
+                    </nav>
+                  </CollapsibleContent>
+                </Collapsible>
               </nav>
             </SheetContent>
           </Sheet>

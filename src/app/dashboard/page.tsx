@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 export default function DashboardPage() {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Link href="/dashboard/receipts">
+      <Link href="/dashboard/receipts" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -26,7 +26,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </Link>
-      <Link href="/dashboard/deliveries">
+      <Link href="/dashboard/deliveries" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -40,7 +40,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </Link>
-      <Link href="/dashboard/stock?filter=in-stock">
+      <Link href="/dashboard/stock?filter=in-stock" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Stock</CardTitle>
@@ -54,7 +54,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </Link>
-      <Link href="/dashboard/stock?filter=out-of-stock">
+      <Link href="/dashboard/stock?filter=out-of-stock" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Out of Stock</CardTitle>
@@ -68,7 +68,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </Link>
-      <Link href="/dashboard/internal-transfers" className="col-span-1 md:col-span-2 lg:col-span-4">
+      <Link href="/dashboard/internal-transfers" className="col-span-1 md:col-span-2 lg:col-span-4 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">

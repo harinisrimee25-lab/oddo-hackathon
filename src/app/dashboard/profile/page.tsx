@@ -31,6 +31,9 @@ import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const profileFormSchema = z.object({
+  ownerName: z.string().min(2, {
+    message: 'Owner name must be at least 2 characters.',
+  }),
   shopName: z.string().min(2, {
     message: 'Shop name must be at least 2 characters.',
   }),
@@ -42,6 +45,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 // This can be fetched from an API in a real app
 const defaultValues: Partial<ProfileFormValues> = {
+  ownerName: 'John Doe',
   shopName: 'My Awesome Shop',
   email: 'john.doe@example.com',
   bio: 'I am a stock master in the making!',
@@ -95,6 +99,23 @@ export default function ProfilePage() {
                     <h3 className="text-lg font-semibold">Shop Logo</h3>
                 </div>
             </div>
+            <FormField
+              control={form.control}
+              name="ownerName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Owner Name</FormLabel>
+                  {isEditing ? (
+                    <FormControl>
+                        <Input placeholder="Your name" {...field} />
+                    </FormControl>
+                  ) : (
+                    <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="shopName"

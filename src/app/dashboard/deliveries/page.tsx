@@ -1,3 +1,6 @@
+
+'use client';
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -22,8 +25,10 @@ import {
 } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { NewDeliveryForm } from '@/components/dashboard/new-delivery-form';
 
-const deliveriesData = [
+const initialDeliveriesData = [
   {
     productName: 'Laptop Pro',
     quantity: 1,
@@ -54,14 +59,9 @@ const deliveriesData = [
   },
 ];
 
-const pendingDeliveries = deliveriesData.filter(
-  (d) => d.deliveryStatus === 'Pending' || d.deliveryStatus === 'Shipped'
-);
-const deliveredDeliveries = deliveriesData.filter(
-  (d) => d.deliveryStatus === 'Delivered'
-);
+type Delivery = typeof initialDeliveriesData[0];
 
-function DeliveryTable({ deliveries }: { deliveries: typeof deliveriesData }) {
+function DeliveryTable({ deliveries }: { deliveries: Delivery[] }) {
     return (
         <Table>
             <TableHeader>
@@ -105,6 +105,26 @@ function DeliveryTable({ deliveries }: { deliveries: typeof deliveriesData }) {
 }
 
 export default function DeliveriesPage() {
+  const [deliveriesData, setDeliveriesData] = React.useState(initialDeliveriesData);
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+
+  const pendingDeliveries = deliveriesData.filter(
+    (d) => d.deliveryStatus === 'Pending' || d.deliveryStatus === 'Shipped'
+  );
+  const deliveredDeliveries = deliveriesData.filter(
+    (d) => d.deliveryStatus === 'Delivered'
+  );
+
+  const handleAddDelivery = (newDelivery: Omit<Delivery, 'totalAmount' | 'deliveryStatus'>) => {
+    const deliveryWithTotal = {
+      ...newDelivery,
+      totalAmount: newDelivery.quantity * newDelivery.costPerItem,
+      deliveryStatus: 'Pending',
+    } as Delivery;
+    setDeliveriesData((prev) => [...prev, deliveryWithTotal]);
+    setIsDialogOpen(false);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -115,10 +135,20 @@ export default function DeliveriesPage() {
                 Track outgoing shipments and their status.
                 </CardDescription>
             </div>
-            <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                New Delivery
-            </Button>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                    <Button>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        New Delivery
+                    </Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Create New Delivery</DialogTitle>
+                    </DialogHeader>
+                    <NewDeliveryForm onAddDelivery={handleAddDelivery} />
+                </DialogContent>
+            </Dialog>
         </div>
       </CardHeader>
       <CardContent>

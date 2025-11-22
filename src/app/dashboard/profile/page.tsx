@@ -8,7 +8,7 @@ import * as z from 'zod';
 import { Loader2, Edit, Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from "recharts"
 
 import { Button } from '@/components/ui/button';
 import {
@@ -129,7 +129,7 @@ function CompanyProgressChart() {
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-                    <AreaChart accessibilityLayer data={currentData}>
+                    <BarChart accessibilityLayer data={currentData}>
                         <CartesianGrid vertical={false} />
                         <XAxis
                             dataKey={dataKey}
@@ -154,12 +154,12 @@ function CompanyProgressChart() {
                                     }
                                     return label;
                                 }}
-                                formatter={(value, name) => {
-                                    const label = value < 0 ? 'Loss' : 'Profit';
+                                formatter={(value) => {
+                                    const label = Number(value) < 0 ? 'Loss' : 'Profit';
                                     const formattedValue = new Intl.NumberFormat('en-US', {
                                         style: 'currency',
                                         currency: 'USD',
-                                    }).format(Math.abs(value as number));
+                                    }).format(Math.abs(Number(value)));
                                     return (
                                         <div className="flex flex-col">
                                             <span>{label}: {formattedValue}</span>
@@ -168,38 +168,16 @@ function CompanyProgressChart() {
                                 }}
                             />}
                         />
-                        <defs>
-                            <linearGradient id="fillNegative" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="var(--color-loss)" stopOpacity={0.8}/>
-                                <stop offset="95%" stopColor="var(--color-loss)" stopOpacity={0.1}/>
-                            </linearGradient>
-                             <linearGradient id="fillPositive" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="var(--color-profit)" stopOpacity={0.8}/>
-                                <stop offset="95%" stopColor="var(--color-profit)" stopOpacity={0.1}/>
-                            </linearGradient>
-                        </defs>
-                        <ReferenceLine y={0} stroke="hsl(var(--foreground))" strokeWidth={1} />
-                        <Area
-                            dataKey="profit"
-                            type="monotone"
-                            strokeWidth={2}
-                            stackId="a"
-                            fillOpacity={1}
-                            stroke="var(--color-profit)"
-                            fill="url(#fillPositive)"
-                            hide={currentData.every(d => d.profit < 0)}
-                        />
-                        <Area
-                            dataKey="profit"
-                            type="monotone"
-                            strokeWidth={2}
-                            stackId="b"
-                            fillOpacity={1}
-                            stroke="var(--color-loss)"
-                            fill="url(#fillNegative)"
-                            hide={currentData.every(d => d.profit >= 0)}
-                        />
-                    </AreaChart>
+                         <ReferenceLine y={0} stroke="hsl(var(--foreground))" strokeWidth={1} />
+                        <Bar dataKey="profit" radius={4}>
+                            {currentData.map((d, index) => (
+                                <rect
+                                    key={index}
+                                    fill={d.profit >= 0 ? "hsl(var(--chart-1))" : "hsl(var(--destructive))"}
+                                />
+                            ))}
+                        </Bar>
+                    </BarChart>
                 </ChartContainer>
             </CardContent>
         </Card>

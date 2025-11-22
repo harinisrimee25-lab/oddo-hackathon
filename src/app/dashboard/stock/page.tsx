@@ -19,7 +19,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Filter } from "lucide-react";
+import { Filter, Pencil } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
@@ -77,11 +77,12 @@ import { EditStockForm } from "@/components/dashboard/edit-stock-form";
                 <TableHead className="text-right">On Hand</TableHead>
                 <TableHead className="text-right">Free to Use</TableHead>
                 <TableHead className="text-center">Status</TableHead>
+                <TableHead className="text-center">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {products.map((item) => (
-                <TableRow key={item.barCodeNumber} onClick={() => onProductSelect(item)} className="cursor-pointer">
+                <TableRow key={item.barCodeNumber}>
                   <TableCell className="font-medium">{item.product}</TableCell>
                   <TableCell>{item.barCodeNumber}</TableCell>
                   <TableCell className="text-right">${item.perUnitCost.toFixed(2)}</TableCell>
@@ -91,6 +92,12 @@ import { EditStockForm } from "@/components/dashboard/edit-stock-form";
                     <Badge variant={item.onHand > 0 ? 'success' : 'destructive'}>
                       {item.onHand > 0 ? 'In Stock' : 'Out of Stock'}
                     </Badge>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Button variant="ghost" size="icon" onClick={() => onProductSelect(item)}>
+                      <Pencil className="h-4 w-4" />
+                      <span className="sr-only">Edit Product</span>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

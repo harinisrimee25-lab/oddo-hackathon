@@ -28,15 +28,15 @@ export default function LoginPage() {
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
             <TabsContent value="signin">
-                <p className="text-sm text-center text-muted-foreground my-4">
+                <div className="text-sm text-center text-muted-foreground my-4">
                     Enter your credentials to access your account.
-                </p>
+                </div>
                 <LoginForm />
             </TabsContent>
             <TabsContent value="signup">
-                <p className="text-sm text-center text-muted-foreground my-4">
+                <div className="text-sm text-center text-muted-foreground my-4">
                     Create an account to get started.
-                </p>
+                </div>
                 <SignUpForm />
             </TabsContent>
           </Tabs>

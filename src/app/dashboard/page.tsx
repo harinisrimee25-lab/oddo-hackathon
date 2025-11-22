@@ -68,19 +68,21 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </Link>
-       <Card className="col-span-1 md:col-span-2 lg:col-span-4">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Scheduled Internal Transfer
-            </CardTitle>
-            <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground mb-4">
-              Manage and schedule stock movements between your warehouses.
-            </p>
-          </CardContent>
-        </Card>
+      <Link href="/dashboard/internal-transfers" className="col-span-1 md:col-span-2 lg:col-span-4">
+        <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Scheduled Internal Transfer
+              </CardTitle>
+              <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-muted-foreground mb-4">
+                Manage and schedule stock movements between your warehouses.
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
     </div>
   );
 }

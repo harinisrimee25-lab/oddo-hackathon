@@ -16,6 +16,7 @@ import {
   User,
   Warehouse,
   LogOut,
+  ArrowRightLeft,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -119,6 +120,13 @@ export default function DashboardLayout({
                     >
                       <SlidersHorizontal className="h-4 w-4" />
                       Adjustments
+                    </Link>
+                     <Link
+                      href="/dashboard/internal-transfers"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <ArrowRightLeft className="h-4 w-4" />
+                      Internal Transfers
                     </Link>
                   </nav>
                 </CollapsibleContent>}
@@ -234,6 +242,13 @@ export default function DashboardLayout({
                         >
                         <SlidersHorizontal className="h-5 w-5" />
                         Adjustments
+                        </Link>
+                        <Link
+                        href="/dashboard/internal-transfers"
+                        className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                        >
+                        <ArrowRightLeft className="h-5 w-5" />
+                        Internal Transfers
                         </Link>
                     </nav>
                   </CollapsibleContent>

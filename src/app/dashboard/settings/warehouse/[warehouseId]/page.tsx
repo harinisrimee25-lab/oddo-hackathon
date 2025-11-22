@@ -21,6 +21,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 // Mock data - in a real app, you would fetch this based on warehouseId
 const warehouseData = {
@@ -73,7 +74,7 @@ const warehouseData = {
 };
 
 
-export default function WarehouseDetailsPage() {
+function WarehouseDetails() {
     const params = useParams();
     const warehouseId = params.warehouseId as string;
     const data = warehouseData[warehouseId as keyof typeof warehouseData];
@@ -222,5 +223,13 @@ export default function WarehouseDetailsPage() {
                 </Tabs>
             </CardContent>
         </Card>
+    );
+}
+
+export default function WarehouseDetailsPage() {
+    return (
+        <Suspense fallback={<div>Loading warehouse details...</div>}>
+            <WarehouseDetails />
+        </Suspense>
     );
 }

@@ -12,6 +12,10 @@ import {
   History,
   Package,
   Cpu,
+  ChevronDown,
+  Receipt,
+  Truck,
+  SlidersHorizontal,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -29,18 +33,26 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
+import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import React from 'react';
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isOperationsOpen, setIsOperationsOpen] = React.useState(false);
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -64,13 +76,40 @@ export default function DashboardLayout({
                 <Home className="h-4 w-4" />
                 Dashboard
               </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Cpu className="h-4 w-4" />
-                Operations
-              </Link>
+              <Collapsible open={isOperationsOpen} onOpenChange={setIsOperationsOpen}>
+                <CollapsibleTrigger className="flex items-center justify-between w-full">
+                  <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                    <Cpu className="h-4 w-4" />
+                    Operations
+                  </div>
+                  <ChevronDown className={`h-4 w-4 transition-transform ${isOperationsOpen ? 'rotate-180' : ''}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="pl-8">
+                  <nav className="grid gap-y-2">
+                    <Link
+                      href="#"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <Receipt className="h-4 w-4" />
+                      Receipts
+                    </Link>
+                    <Link
+                      href="#"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <Truck className="h-4 w-4" />
+                      Delivery
+                    </Link>
+                    <Link
+                      href="#"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <SlidersHorizontal className="h-4 w-4" />
+                      Adjustments
+                    </Link>
+                  </nav>
+                </CollapsibleContent>
+              </Collapsible>
               <Link
                 href="#"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
@@ -141,13 +180,40 @@ export default function DashboardLayout({
                   <Home className="h-5 w-5" />
                   Dashboard
                 </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Cpu className="h-5 w-5" />
-                  Operations
-                </Link>
+                <Collapsible open={isOperationsOpen} onOpenChange={setIsOperationsOpen}>
+                  <CollapsibleTrigger className="flex items-center justify-between w-full">
+                    <div className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
+                        <Cpu className="h-5 w-5" />
+                        Operations
+                    </div>
+                    <ChevronDown className={`h-4 w-4 transition-transform ${isOperationsOpen ? 'rotate-180' : ''}`} />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="pl-12">
+                      <nav className="grid gap-y-2">
+                        <Link
+                        href="#"
+                        className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                        >
+                        <Receipt className="h-5 w-5" />
+                        Receipts
+                        </Link>
+                        <Link
+                        href="#"
+                        className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                        >
+                        <Truck className="h-5 w-5" />
+                        Delivery
+                        </Link>
+                        <Link
+                        href="#"
+                        className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                        >
+                        <SlidersHorizontal className="h-5 w-5" />
+                        Adjustments
+                        </Link>
+                    </nav>
+                  </CollapsibleContent>
+                </Collapsible>
                 <Link
                   href="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"

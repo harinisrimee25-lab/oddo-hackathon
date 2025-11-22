@@ -88,9 +88,9 @@ function DeliveryTable({ deliveries }: { deliveries: Delivery[] }) {
                             <Badge
                                 variant={
                                     item.deliveryStatus === 'Delivered'
-                                        ? 'default'
+                                        ? 'success'
                                         : item.deliveryStatus === 'Shipped'
-                                            ? 'success'
+                                            ? 'secondary'
                                             : 'destructive'
                                 }
                             >

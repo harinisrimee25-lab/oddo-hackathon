@@ -15,10 +15,12 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Filter } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
   
   const allProducts = [
     {
@@ -59,6 +61,7 @@ import { useSearchParams } from "next/navigation";
   ];
 
   type Product = typeof allProducts[0];
+  type StockStatus = 'in-stock' | 'out-of-stock' | 'all';
 
   function ProductStockTable({ products }: { products: Product[] }) {
     return (
@@ -95,50 +98,59 @@ import { useSearchParams } from "next/navigation";
   
   function StockPageComponent() {
     const searchParams = useSearchParams();
-    const filter = searchParams.get('filter');
+    const urlFilter = searchParams.get('filter') as StockStatus | null;
+    
+    const [filter, setFilter] = useState<StockStatus>(urlFilter || 'all');
 
-    const inStockProducts = allProducts.filter(p => p.onHand > 0);
-    const outOfStockProducts = allProducts.filter(p => p.onHand === 0);
+    useEffect(() => {
+        if (urlFilter) {
+            setFilter(urlFilter);
+        }
+    }, [urlFilter]);
 
-    const defaultValue = filter === 'out-of-stock' ? 'out-of-stock' : 'in-stock';
-
-    if (filter) {
-        return (
-            <Card>
-                <CardHeader>
-                    <CardTitle>Product Stock</CardTitle>
-                    <CardDescription>
-                        {filter === 'in-stock' ? 'An overview of your current in-stock items.' : 'A list of all out-of-stock items.'}
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ProductStockTable products={filter === 'in-stock' ? inStockProducts : outOfStockProducts} />
-                </CardContent>
-            </Card>
-        );
+    const getFilteredProducts = () => {
+        switch (filter) {
+            case 'in-stock':
+                return allProducts.filter(p => p.onHand > 0);
+            case 'out-of-stock':
+                return allProducts.filter(p => p.onHand === 0);
+            default:
+                return allProducts;
+        }
     }
+
+    const filteredProducts = getFilteredProducts();
 
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Product Stock</CardTitle>
-          <CardDescription>
-            An overview of your current product inventory.
-          </CardDescription>
+            <div className="flex items-center justify-between">
+                <div>
+                    <CardTitle>Product Stock</CardTitle>
+                    <CardDescription>
+                        An overview of your current product inventory.
+                    </CardDescription>
+                </div>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline">
+                            <Filter className="mr-2 h-4 w-4" />
+                            Filter ({filter})
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuRadioGroup value={filter} onValueChange={(value) => setFilter(value as StockStatus)}>
+                            <DropdownMenuRadioItem value="all">All</DropdownMenuRadioItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuRadioItem value="in-stock">In Stock</DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value="out-of-stock">Out of Stock</DropdownMenuRadioItem>
+                        </DropdownMenuRadioGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
         </CardHeader>
         <CardContent>
-            <Tabs defaultValue={defaultValue}>
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="in-stock">In Stock</TabsTrigger>
-                    <TabsTrigger value="out-of-stock">Out of Stock</TabsTrigger>
-                </TabsList>
-                <TabsContent value="in-stock">
-                    <ProductStockTable products={inStockProducts} />
-                </TabsContent>
-                <TabsContent value="out-of-stock">
-                    <ProductStockTable products={outOfStockProducts} />
-                </TabsContent>
-            </Tabs>
+           <ProductStockTable products={filteredProducts} />
         </CardContent>
       </Card>
     )
@@ -151,3 +163,4 @@ import { useSearchParams } from "next/navigation";
       </Suspense>
     )
   }
+

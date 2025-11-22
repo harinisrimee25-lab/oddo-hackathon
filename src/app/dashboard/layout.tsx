@@ -56,11 +56,21 @@ export default function DashboardLayout({
   const router = useRouter();
   const { toast } = useToast();
 
-  React.useEffect(() => {
+  const updateName = () => {
     const storedName = localStorage.getItem('userName');
     if (storedName) {
       setUserName(storedName);
     }
+  };
+
+  React.useEffect(() => {
+    updateName();
+
+    window.addEventListener('storage', updateName);
+
+    return () => {
+      window.removeEventListener('storage', updateName);
+    };
   }, []);
 
   const getInitials = (name: string) => {

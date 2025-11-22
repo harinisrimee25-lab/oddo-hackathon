@@ -13,12 +13,6 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
-  import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-  } from '@/components/ui/tabs';
   
   const inStockProducts = [
     {
@@ -58,23 +52,6 @@ import {
     },
   ];
 
-  const soldProducts = [
-    {
-        product: "Gaming Mouse",
-        perUnitCost: 75,
-        onHand: 0,
-        freeToUse: 0,
-        barCodeNumber: "8901234567944",
-      },
-      {
-        product: "USB-C Hub",
-        perUnitCost: 45,
-        onHand: 0,
-        freeToUse: 0,
-        barCodeNumber: "8901234567951",
-      },
-  ]
-
   function ProductStockTable({ products }: { products: typeof inStockProducts }) {
     return (
         <Table>
@@ -112,20 +89,8 @@ import {
           </CardDescription>
         </CardHeader>
         <CardContent>
-            <Tabs defaultValue="in-stock">
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="in-stock">In Stock</TabsTrigger>
-                    <TabsTrigger value="sold">Sold</TabsTrigger>
-                </TabsList>
-                <TabsContent value="in-stock">
-                    <ProductStockTable products={inStockProducts} />
-                </TabsContent>
-                <TabsContent value="sold">
-                    <ProductStockTable products={soldProducts} />
-                </TabsContent>
-            </Tabs>
+            <ProductStockTable products={inStockProducts} />
         </CardContent>
       </Card>
     )
   }
-  

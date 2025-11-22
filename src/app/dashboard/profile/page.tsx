@@ -8,6 +8,7 @@ import * as z from 'zod';
 import { Loader2, Edit } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import { Button } from '@/components/ui/button';
 import {
@@ -29,6 +30,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 
 const profileFormSchema = z.object({
   ownerName: z.string().min(2, {
@@ -41,6 +43,73 @@ const profileFormSchema = z.object({
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
+
+const chartData = [
+    { day: "Monday", profit: 1860 },
+    { day: "Tuesday", profit: -305 },
+    { day: "Wednesday", profit: 2370 },
+    { day: "Thursday", profit: 730 },
+    { daycen: "Friday", profit: -500 },
+    { day: "Saturday", profit: 2480 },
+    { day: "Sunday", profit: 3200 },
+]
+   
+const chartConfig = {
+    profit: {
+        label: "Profit",
+        color: "hsl(var(--chart-1))",
+    },
+} satisfies ChartConfig
+
+function CompanyProgressChart() {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>Company Progress</CardTitle>
+                <CardDescription>Profit and Loss over the last 7 days</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+                    <BarChart accessibilityLayer data={chartData}>
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                            dataKey="day"
+                            tickLine={false}
+                            tickMargin={10}
+                            axisLine={false}
+                            tickFormatter={(value) => value.slice(0, 3)}
+                        />
+                        <YAxis />
+                        <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent 
+                                indicator="dot" 
+                                labelFormatter={(value, payload) => {
+                                    const item = payload[0]?.payload;
+                                    if(item) {
+                                        return `${item.day}: $${item.profit.toLocaleString()}`;
+                                    }
+                                    return value;
+                                }}
+                            />}
+                        />
+                        <Bar 
+                            dataKey="profit" 
+                            fill="var(--color-profit)" 
+                            radius={4} 
+                            // Add a conditional fill for negative values
+                            shape={(props) => {
+                                const { x, y, width, height, payload } = props;
+                                const isNegative = payload.profit < 0;
+                                return <rect x={x} y={isNegative ? y : y} width={width} height={Math.abs(height)} fill={isNegative ? "hsl(var(--destructive))" : "hsl(var(--primary))"} rx={4} />;
+                            }}
+                        />
+                    </BarChart>
+                </ChartContainer>
+            </CardContent>
+        </Card>
+    )
+}
 
 function ProfilePageComponent() {
   const [isEditing, setIsEditing] = React.useState(false);
@@ -106,101 +175,104 @@ function ProfilePageComponent() {
   };
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-            <CardTitle>My Profile</CardTitle>
-        </div>
-        {!isEditing && (
-            <Button variant="outline" onClick={() => setIsEditing(true)}>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit Profile
-            </Button>
-        )}
-      </CardHeader>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="space-y-6">
-            <div className="flex items-center gap-4">
-                <Avatar className="h-20 w-20">
-                    <AvatarImage src="https://picsum.photos/seed/1/200/200" alt="Shop Logo" />
-                    <AvatarFallback>{getInitials(user.ownerName)}</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1.5">
-                    <h3 className="text-lg font-semibold">Shop Logo</h3>
+    <div className="grid gap-6">
+        <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                    <CardTitle>My Profile</CardTitle>
                 </div>
-            </div>
-            <FormField
-              control={form.control}
-              name="ownerName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Owner Name</FormLabel>
-                  {isEditing ? (
-                    <FormControl>
-                        <Input placeholder="Your name" {...field} />
-                    </FormControl>
-                  ) : (
-                    <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
-                  )}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="shopName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Shop Name</FormLabel>
-                  {isEditing ? (
-                    <FormControl>
-                        <Input placeholder="Your shop name" {...field} />
-                    </FormControl>
-                  ) : (
-                    <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
-                  )}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  {isEditing ? (
-                    <FormControl>
-                        <Input placeholder="Your email" {...field} />
-                    </FormControl>
-                  ) : (
-                    <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
-                  )}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CardContent>
-          <CardFooter className="border-t px-6 py-4 flex justify-between">
-            {isEditing ? (
-                <>
-                    <Button type="submit" disabled={isSubmitting}>
-                        {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        Save Changes
+                {!isEditing && (
+                    <Button variant="outline" onClick={() => setIsEditing(true)}>
+                        <Edit className="mr-2 h-4 w-4" />
+                        Edit Profile
                     </Button>
-                    <Button variant="ghost" onClick={() => {
-                        form.reset(user);
-                        setIsEditing(false)
-                    }}>Cancel</Button>
-                </>
-            ) : (
-                <Button variant="destructive" type="button" onClick={handleSignOut}>Sign Out</Button>
-            )}
-          </CardFooter>
-        </form>
-      </Form>
-    </Card>
+                )}
+            </CardHeader>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <CardContent className="space-y-6">
+                    <div className="flex items-center gap-4">
+                        <Avatar className="h-20 w-20">
+                            <AvatarImage src="https://picsum.photos/seed/1/200/200" alt="Shop Logo" />
+                            <AvatarFallback>{getInitials(user.ownerName)}</AvatarFallback>
+                        </Avatar>
+                        <div className="grid gap-1.5">
+                            <h3 className="text-lg font-semibold">Shop Logo</h3>
+                        </div>
+                    </div>
+                    <FormField
+                    control={form.control}
+                    name="ownerName"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Owner Name</FormLabel>
+                        {isEditing ? (
+                            <FormControl>
+                                <Input placeholder="Your name" {...field} />
+                            </FormControl>
+                        ) : (
+                            <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
+                        )}
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField
+                    control={form.control}
+                    name="shopName"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Shop Name</FormLabel>
+                        {isEditing ? (
+                            <FormControl>
+                                <Input placeholder="Your shop name" {...field} />
+                            </FormControl>
+                        ) : (
+                            <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
+                        )}
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        {isEditing ? (
+                            <FormControl>
+                                <Input placeholder="Your email" {...field} />
+                            </FormControl>
+                        ) : (
+                            <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
+                        )}
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                </CardContent>
+                <CardFooter className="border-t px-6 py-4 flex justify-between">
+                    {isEditing ? (
+                        <>
+                            <Button type="submit" disabled={isSubmitting}>
+                                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                Save Changes
+                            </Button>
+                            <Button variant="ghost" onClick={() => {
+                                form.reset(user);
+                                setIsEditing(false)
+                            }}>Cancel</Button>
+                        </>
+                    ) : (
+                        <Button variant="destructive" type="button" onClick={handleSignOut}>Sign Out</Button>
+                    )}
+                </CardFooter>
+                </form>
+            </Form>
+        </Card>
+        <CompanyProgressChart />
+    </div>
   );
 }
 

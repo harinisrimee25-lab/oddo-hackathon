@@ -2,11 +2,9 @@
 'use client';
 
 import * as React from 'react';
-import { generateFinancialSummary, type GenerateFinancialSummaryOutput } from '@/ai/flows/generate-summary-flow';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const warehouseData = {
     'Main Warehouse': [
@@ -38,72 +36,53 @@ const warehouseData = {
     ],
 };
 
-function MarkdownRenderer({ content }: { content: string }) {
-  // A simple renderer for markdown-like text
-  return (
-    <div className="space-y-4">
-      {content.split('\n\n').map((paragraph, pIndex) => (
-        <p key={pIndex} className="text-muted-foreground">
-          {paragraph.split('\n').map((line, lIndex) => {
-             if (line.startsWith('### ')) {
-              return <h3 key={lIndex} className="text-lg font-semibold text-foreground mt-4 mb-2">{line.replace('### ', '')}</h3>
-            }
-            if (line.startsWith('**') && line.endsWith('**')) {
-              return <strong key={lIndex}>{line.substring(2, line.length - 2)}</strong>;
-            }
-            return <React.Fragment key={lIndex}>{line}<br/></React.Fragment>;
-          })}
-        </p>
-      ))}
-    </div>
-  );
+type SummaryData = {
+    overallSummary: string;
+    totalProfit: number;
+    bestPerformingWarehouse: string;
+    lowestPerformingWarehouse: string;
+    warehouseSummaries: {
+        warehouseName: string;
+        totalProfit: number;
+        dailyData: { day: string; profit: number }[];
+    }[];
 }
 
-
 export default function FinancialSummaryPage() {
-    const [summary, setSummary] = React.useState<GenerateFinancialSummaryOutput | null>(null);
-    const [isLoading, setIsLoading] = React.useState(true);
-    const [error, setError] = React.useState<string | null>(null);
+    const [summary, setSummary] = React.useState<SummaryData | null>(null);
 
     React.useEffect(() => {
-        const getSummary = async () => {
-            try {
-                setIsLoading(true);
-                setError(null);
-                const result = await generateFinancialSummary(warehouseData);
-                setSummary(result);
-            } catch (err) {
-                console.error(err);
-                setError('Failed to generate financial summary. Please try again later.');
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        const warehouseSummaries = Object.entries(warehouseData).map(([name, data]) => {
+            const totalProfit = data.reduce((acc, curr) => acc + curr.profit, 0);
+            return { warehouseName: name, totalProfit, dailyData: data };
+        });
 
-        getSummary();
+        const totalProfit = warehouseSummaries.reduce((acc, curr) => acc + curr.totalProfit, 0);
+
+        const sortedWarehouses = [...warehouseSummaries].sort((a, b) => b.totalProfit - a.totalProfit);
+        const bestPerformingWarehouse = sortedWarehouses[0].warehouseName;
+        const lowestPerformingWarehouse = sortedWarehouses[sortedWarehouses.length - 1].warehouseName;
+
+        const overallSummary = `The business performed well this week, achieving a total profit of $${totalProfit.toFixed(2)}. ${bestPerformingWarehouse} was the top performer, while ${lowestPerformingWarehouse} had the lowest profit.`;
+
+        setSummary({
+            overallSummary,
+            totalProfit,
+            bestPerformingWarehouse,
+            lowestPerformingWarehouse,
+            warehouseSummaries
+        });
     }, []);
 
     return (
         <Card>
             <CardHeader>
-                <CardTitle>AI-Generated Financial Summary</CardTitle>
+                <CardTitle>Financial Summary</CardTitle>
                 <CardDescription>
-                    An automated analysis of your shop's profit and loss across all warehouses for the week.
+                    A simple analysis of your shop's profit and loss across all warehouses for the week.
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                {isLoading && (
-                    <div className="flex items-center justify-center min-h-[400px]">
-                        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                        <p className="ml-4 text-muted-foreground">Generating your financial summary...</p>
-                    </div>
-                )}
-                {error && (
-                    <Alert variant="destructive">
-                        <AlertTitle>Error</AlertTitle>
-                        <AlertDescription>{error}</AlertDescription>
-                    </Alert>
-                )}
                 {summary && (
                     <div className="space-y-6">
                         <div>
@@ -135,7 +114,24 @@ export default function FinancialSummaryPage() {
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent>
-                                        <MarkdownRenderer content={ws.summary} />
+                                         <Table>
+                                            <TableHeader>
+                                                <TableRow>
+                                                    <TableHead>Day</TableHead>
+                                                    <TableHead className="text-right">Profit</TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {ws.dailyData.map(d => (
+                                                    <TableRow key={d.day}>
+                                                        <TableCell>{d.day}</TableCell>
+                                                        <TableCell className={`text-right ${d.profit >= 0 ? 'text-success-foreground' : 'text-destructive'}`}>
+                                                            ${d.profit.toFixed(2)}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
                                     </CardContent>
                                 </Card>
                             ))}

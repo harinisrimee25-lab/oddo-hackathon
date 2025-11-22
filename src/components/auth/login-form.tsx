@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -27,6 +29,9 @@ const formSchema = z.object({
   }),
   password: z.string().min(8, {
     message: "Password must be at least 8 characters.",
+  }),
+  terms: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions.",
   }),
 });
 
@@ -40,6 +45,7 @@ export function LoginForm() {
     defaultValues: {
       email: "",
       password: "",
+      terms: false,
     },
   });
 
@@ -100,6 +106,29 @@ export function LoginForm() {
                 </Link>
               </div>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="terms"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <Label
+                  htmlFor="terms"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Accept all terms and conditions
+                </Label>
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />

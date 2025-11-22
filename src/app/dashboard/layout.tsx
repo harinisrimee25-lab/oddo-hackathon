@@ -57,7 +57,7 @@ export default function DashboardLayout({
     >
       <div
         className={cn(
-          'hidden border-r bg-muted/40 md:block transition-all',
+          'hidden border-r bg-background md:block transition-all',
           isSidebarOpen ? 'w-full' : 'w-[68px]'
         )}
       >
@@ -153,7 +153,7 @@ export default function DashboardLayout({
         </div>
       </div>
       <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+        <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
               <Button

@@ -54,7 +54,7 @@ const profileFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 type ChartFilter = 'today' | 'this week' | 'this month' | 'this year';
 
-const chartData = {
+const staticChartData = {
     'this week': [
         { day: "Monday", profit: 1860 },
         { day: "Tuesday", profit: -305 },
@@ -63,9 +63,6 @@ const chartData = {
         { day: "Friday", profit: -500 },
         { day: "Saturday", profit: 2480 },
         { day: "Sunday", profit: 3200 },
-    ],
-    'today': [
-        { day: new Date().toLocaleDateString('en-US', { weekday: 'long'}), profit: Math.floor(Math.random() * 4000) - 1000 },
     ],
     'this month': Array.from({ length: 30 }, (_, i) => ({
         day: `Day ${i + 1}`,
@@ -100,9 +97,38 @@ const chartConfig = {
 
 function CompanyProgressChart() {
     const [filter, setFilter] = React.useState<ChartFilter>('this week');
+    const [chartData, setChartData] = React.useState<typeof staticChartData & { today: { day: string, profit: number }[] }>();
+
+    React.useEffect(() => {
+        const todayData = [
+            { day: '9 AM', profit: Math.floor(Math.random() * 1000) - 200 },
+            { day: '10 AM', profit: Math.floor(Math.random() * 1000) - 200 },
+            { day: '11 AM', profit: Math.floor(Math.random() * 1000) - 200 },
+            { day: '12 PM', profit: Math.floor(Math.random() * 1000) - 200 },
+            { day: '1 PM', profit: Math.floor(Math.random() * 1000) - 200 },
+            { day: '2 PM', profit: Math.floor(Math.random() * 1000) - 200 },
+            { day: '3 PM', profit: Math.floor(Math.random() * 1000) - 200 },
+            { day: '4 PM', profit: Math.floor(Math.random() * 1000) - 200 },
+        ];
+        setChartData({ ...staticChartData, today: todayData });
+    }, []);
     
+    if (!chartData) {
+        return (
+             <Card>
+                <CardHeader>
+                    <CardTitle>Business Trends</CardTitle>
+                    <CardDescription>Loading chart data...</CardDescription>
+                </CardHeader>
+                <CardContent className="min-h-[200px] w-full flex items-center justify-center">
+                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                </CardContent>
+            </Card>
+        )
+    }
+
     const currentData = chartData[filter];
-    const dataKey = filter === 'this month' || filter === 'this year' ? 'day' : 'day';
+    const dataKey = 'day';
 
     return (
         <Card>
@@ -138,7 +164,7 @@ function CompanyProgressChart() {
                             tickMargin={10}
                             axisLine={false}
                             tickFormatter={(value) => {
-                                if (filter === 'this week' || filter === 'today') return value.slice(0, 3);
+                                if (filter === 'this week') return value.slice(0, 3);
                                 if (filter === 'this month') return value.startsWith('Day 1') || value.endsWith('5') || value.endsWith('0') ? value.replace('Day ', '') : '';
                                 return value;
                             }}

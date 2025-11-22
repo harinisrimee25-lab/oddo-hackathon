@@ -128,14 +128,14 @@ export default function DashboardLayout({
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Link
                 href="/dashboard"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
               >
                 <Home className="h-4 w-4" />
                 {isSidebarOpen && 'Dashboard'}
               </Link>
               <Collapsible open={isOperationsOpen} onOpenChange={setIsOperationsOpen}>
                 <CollapsibleTrigger className="flex items-center justify-between w-full">
-                  <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                  <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary">
                     <Cpu className="h-4 w-4" />
                     {isSidebarOpen && 'Operations'}
                   </div>
@@ -145,28 +145,28 @@ export default function DashboardLayout({
                   <nav className="grid gap-y-2">
                     <Link
                       href="/dashboard/receipts"
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
                     >
                       <Receipt className="h-4 w-4" />
                       Receipts
                     </Link>
                     <Link
                       href="/dashboard/deliveries"
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
                     >
                       <Truck className="h-4 w-4" />
                       Delivery
                     </Link>
                     <Link
                       href="/dashboard/adjustments"
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
                     >
                       <SlidersHorizontal className="h-4 w-4" />
                       Adjustments
                     </Link>
                      <Link
                       href="/dashboard/internal-transfers"
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
                     >
                       <ArrowRightLeft className="h-4 w-4" />
                       Internal Transfers
@@ -176,28 +176,28 @@ export default function DashboardLayout({
               </Collapsible>
               <Link
                 href="/dashboard/stock"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
               >
                 <Package className="h-4 w-4" />
                 {isSidebarOpen && 'Stock'}
               </Link>
               <Link
                 href="/dashboard/move-history"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
               >
                 <History className="h-4 w-4" />
                 {isSidebarOpen && 'Move History'}
               </Link>
               <Link
                 href="/dashboard/profile"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
               >
                 <User className="h-4 w-4" />
                 {isSidebarOpen && 'My Profile'}
               </Link>
               <Collapsible open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
                 <CollapsibleTrigger className="flex items-center justify-between w-full">
-                  <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                  <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary">
                     <Settings className="h-4 w-4" />
                     {isSidebarOpen && 'Settings'}
                   </div>
@@ -207,21 +207,21 @@ export default function DashboardLayout({
                   <nav className="grid gap-y-2">
                     <Link
                       href="/dashboard/settings/warehouse"
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
                     >
                       <Warehouse className="h-4 w-4" />
                       Warehouse
                     </Link>
                     <Link
                       href="/dashboard/settings/instructions"
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
                     >
                       <Info className="h-4 w-4" />
                       Instructions
                     </Link>
                     <Link
                       href="/"
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
                     >
                       <LogOut className="h-4 w-4" />
                       Sign Out
@@ -403,4 +403,5 @@ export default function DashboardLayout({
   );
 }
 
+    
     

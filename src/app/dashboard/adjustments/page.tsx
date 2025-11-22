@@ -25,42 +25,50 @@ import {
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 
-const damageData = [
-    {
-        productName: 'Laptop Pro',
-        barcodeNumber: '8901234567890',
-        date: '2024-06-01',
-        quantity: 1,
-        reason: 'Dropped during handling',
-    },
-    {
-        productName: '4K Monitor',
-        barcodeNumber: '8901234567920',
-        date: '2024-06-02',
-        quantity: 2,
-        reason: 'Screen cracked in storage',
-    },
-];
+const allAdjustments = {
+    damage: [
+        {
+            productName: 'Laptop Pro',
+            barcodeNumber: '8901234567890',
+            date: '2024-06-01',
+            quantity: 1,
+            reason: 'Dropped during handling',
+        },
+        {
+            productName: '4K Monitor',
+            barcodeNumber: '8901234567920',
+            date: '2024-06-02',
+            quantity: 2,
+            reason: 'Screen cracked in storage',
+        },
+    ],
+    shrinkage: [
+        {
+            productName: 'Wireless Mouse',
+            barcodeNumber: '8901234567906',
+            date: '2024-06-01',
+            quantity: 5,
+            reason: 'Inventory count discrepancy',
+        },
+        {
+            productName: 'Laptop Pro',
+            barcodeNumber: '8901234567890',
+            date: '2024-06-03',
+            quantity: 1,
+            reason: 'Theft',
+        },
+    ],
+    expiry: [
+        {
+            productName: 'Organic Tea Leaves',
+            barcodeNumber: '9988776655441',
+            date: '2024-05-31',
+            quantity: 10,
+            reason: 'Expired on shelf',
+        },
+    ],
+}
 
-const shrinkageData = [
-    {
-        productName: 'Wireless Mouse',
-        barcodeNumber: '8901234567906',
-        date: '2024-06-01',
-        quantity: 5,
-        reason: 'Inventory count discrepancy',
-    },
-];
-
-const expiryData = [
-    {
-        productName: 'Organic Tea Leaves',
-        barcodeNumber: '9988776655441',
-        date: '2024-05-31',
-        quantity: 10,
-        reason: 'Expired on shelf',
-    },
-];
 
 type Adjustment = {
     productName: string;
@@ -99,21 +107,33 @@ function AdjustmentTable({ data }: { data: Adjustment[] }) {
 
 export default function AdjustmentsPage() {
     const [searchTerm, setSearchTerm] = React.useState('');
+    const [filteredData, setFilteredData] = React.useState(allAdjustments);
 
-    const filterData = (data: Adjustment[]) => {
+    React.useEffect(() => {
         if (!searchTerm) {
-            return data;
+            setFilteredData(allAdjustments);
+            return;
         }
-        return data.filter(
-            (item) =>
-                item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                item.barcodeNumber.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-    };
 
-    const filteredDamageData = filterData(damageData);
-    const filteredShrinkageData = filterData(shrinkageData);
-    const filteredExpiryData = filterData(expiryData);
+        const lowercasedFilter = searchTerm.toLowerCase();
+        
+        const filtered = {
+            damage: allAdjustments.damage.filter(item => 
+                item.productName.toLowerCase().includes(lowercasedFilter) || 
+                item.barcodeNumber.includes(lowercasedFilter)
+            ),
+            shrinkage: allAdjustments.shrinkage.filter(item => 
+                item.productName.toLowerCase().includes(lowercasedFilter) || 
+                item.barcodeNumber.includes(lowercasedFilter)
+            ),
+            expiry: allAdjustments.expiry.filter(item => 
+                item.productName.toLowerCase().includes(lowercasedFilter) || 
+                item.barcodeNumber.includes(lowercasedFilter)
+            ),
+        };
+
+        setFilteredData(filtered);
+    }, [searchTerm]);
 
     return (
         <Card>
@@ -128,7 +148,7 @@ export default function AdjustmentsPage() {
                     <div className="relative w-full max-w-sm">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input 
-                            placeholder="Search by name or barcode..."
+                            placeholder="Search by product name or barcode..."
                             className="pl-10"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -150,7 +170,7 @@ export default function AdjustmentsPage() {
                                 <CardDescription>Products reported as damaged.</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <AdjustmentTable data={filteredDamageData} />
+                                <AdjustmentTable data={filteredData.damage} />
                             </CardContent>
                         </Card>
                     </TabsContent>
@@ -161,7 +181,7 @@ export default function AdjustmentsPage() {
                                 <CardDescription>Inventory losses due to theft, or administrative errors.</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <AdjustmentTable data={filteredShrinkageData} />
+                                <AdjustmentTable data={filteredData.shrinkage} />
                             </CardContent>
                         </Card>
                     </TabsContent>
@@ -172,7 +192,7 @@ export default function AdjustmentsPage() {
                                 <CardDescription>Products that have passed their expiration date.</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <AdjustmentTable data={filteredExpiryData} />
+                                <AdjustmentTable data={filteredData.expiry} />
                             </CardContent>
                         </Card>
                     </TabsContent>

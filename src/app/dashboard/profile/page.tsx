@@ -75,9 +75,6 @@ export default function ProfilePage() {
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
             <CardTitle>My Profile</CardTitle>
-            <CardDescription>
-            Update your shop information and personal details.
-            </CardDescription>
         </div>
         {!isEditing && (
             <Button variant="outline" onClick={() => setIsEditing(true)}>
@@ -96,9 +93,6 @@ export default function ProfilePage() {
                 </Avatar>
                 <div className="grid gap-1.5">
                     <h3 className="text-lg font-semibold">Shop Logo</h3>
-                    <p className="text-sm text-muted-foreground">
-                        This is your shop's public display image.
-                    </p>
                 </div>
             </div>
             <FormField

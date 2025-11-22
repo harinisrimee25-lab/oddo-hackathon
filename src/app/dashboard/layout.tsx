@@ -70,7 +70,7 @@ export default function DashboardLayout({
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Link
-                href="#"
+                href="/dashboard"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Home className="h-4 w-4" />
@@ -111,7 +111,7 @@ export default function DashboardLayout({
                 </CollapsibleContent>
               </Collapsible>
               <Link
-                href="#"
+                href="/dashboard/stack"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Package className="h-4 w-4" />
@@ -174,7 +174,7 @@ export default function DashboardLayout({
                   <span className="sr-only">Stock Master</span>
                 </Link>
                 <Link
-                  href="#"
+                  href="/dashboard"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <Home className="h-5 w-5" />
@@ -215,7 +215,7 @@ export default function DashboardLayout({
                   </CollapsibleContent>
                 </Collapsible>
                 <Link
-                  href="#"
+                  href="/dashboard/stack"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <Package className="h-5 w-5" />

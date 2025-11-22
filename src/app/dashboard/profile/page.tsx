@@ -147,12 +147,24 @@ function CompanyProgressChart() {
                             cursor={false}
                             content={<ChartTooltipContent 
                                 indicator="dot" 
-                                labelFormatter={(value, payload) => {
+                                labelFormatter={(label, payload) => {
                                     const item = payload[0]?.payload;
                                     if(item) {
-                                        return `${item.day}: $${item.profit.toLocaleString()}`;
+                                        return `${item.day}`;
                                     }
-                                    return value;
+                                    return label;
+                                }}
+                                formatter={(value, name) => {
+                                    const label = value < 0 ? 'Loss' : 'Profit';
+                                    const formattedValue = new Intl.NumberFormat('en-US', {
+                                        style: 'currency',
+                                        currency: 'USD',
+                                    }).format(Math.abs(value as number));
+                                    return (
+                                        <div className="flex flex-col">
+                                            <span>{label}: {formattedValue}</span>
+                                        </div>
+                                    )
                                 }}
                             />}
                         />
@@ -172,6 +184,7 @@ function CompanyProgressChart() {
                             type="monotone"
                             strokeWidth={2}
                             stackId="a"
+                            fillOpacity={1}
                             stroke="var(--color-profit)"
                             fill="url(#fillPositive)"
                             hide={currentData.every(d => d.profit < 0)}
@@ -181,6 +194,7 @@ function CompanyProgressChart() {
                             type="monotone"
                             strokeWidth={2}
                             stackId="b"
+                            fillOpacity={1}
                             stroke="var(--color-loss)"
                             fill="url(#fillNegative)"
                             hide={currentData.every(d => d.profit >= 0)}
@@ -364,5 +378,7 @@ export default function ProfilePage() {
         </Suspense>
     )
 }
+
+    
 
     

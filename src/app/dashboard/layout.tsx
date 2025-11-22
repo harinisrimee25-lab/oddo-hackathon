@@ -111,11 +111,11 @@ export default function DashboardLayout({
                 </CollapsibleContent>
               </Collapsible>
               <Link
-                href="/dashboard/stack"
+                href="/dashboard/stock"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Package className="h-4 w-4" />
-                Stack
+                Stock
               </Link>
               <Link
                 href="/dashboard/move-history"
@@ -215,11 +215,11 @@ export default function DashboardLayout({
                   </CollapsibleContent>
                 </Collapsible>
                 <Link
-                  href="/dashboard/stack"
+                  href="/dashboard/stock"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <Package className="h-5 w-5" />
-                  Stack
+                  Stock
                 </Link>
                 <Link
                   href="/dashboard/move-history"

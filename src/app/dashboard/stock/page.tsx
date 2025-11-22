@@ -47,11 +47,11 @@ import {
     },
   ]
   
-  export default function StackPage() {
+  export default function StockPage() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Product Stack</CardTitle>
+          <CardTitle>Product Stock</CardTitle>
           <CardDescription>
             An overview of your current product inventory.
           </CardDescription>

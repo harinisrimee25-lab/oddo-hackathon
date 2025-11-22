@@ -108,7 +108,7 @@ function CompanyProgressChart() {
         <Card>
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
-                    <CardTitle>Company Progress</CardTitle>
+                    <CardTitle>Business Trends</CardTitle>
                     <CardDescription>Profit and Loss over the selected period</CardDescription>
                 </div>
                  <DropdownMenu>

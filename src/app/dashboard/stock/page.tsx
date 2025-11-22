@@ -20,8 +20,10 @@ import { Badge } from "@/components/ui/badge";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
+import { EditStockForm } from "@/components/dashboard/edit-stock-form";
   
   const allProducts = [
     {
@@ -61,10 +63,10 @@ import { useToast } from "@/hooks/use-toast";
     },
   ];
 
-  type Product = typeof allProducts[0];
+  export type Product = typeof allProducts[0];
   type StockStatus = 'in-stock' | 'out-of-stock' | 'all';
 
-  function ProductStockTable({ products }: { products: Product[] }) {
+  function ProductStockTable({ products, onProductSelect }: { products: Product[], onProductSelect: (product: Product) => void }) {
     return (
         <Table>
             <TableHeader>
@@ -79,7 +81,7 @@ import { useToast } from "@/hooks/use-toast";
             </TableHeader>
             <TableBody>
               {products.map((item) => (
-                <TableRow key={item.product}>
+                <TableRow key={item.barCodeNumber} onClick={() => onProductSelect(item)} className="cursor-pointer">
                   <TableCell className="font-medium">{item.product}</TableCell>
                   <TableCell>{item.barCodeNumber}</TableCell>
                   <TableCell className="text-right">${item.perUnitCost.toFixed(2)}</TableCell>
@@ -101,11 +103,14 @@ import { useToast } from "@/hooks/use-toast";
     const searchParams = useSearchParams();
     const urlFilter = searchParams.get('filter') as StockStatus | null;
     
+    const [products, setProducts] = useState<Product[]>(allProducts);
     const [filter, setFilter] = useState<StockStatus>(urlFilter || 'all');
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { toast } = useToast();
 
     useEffect(() => {
-        const outOfStockProducts = allProducts.filter(p => p.onHand === 0);
+        const outOfStockProducts = products.filter(p => p.onHand === 0);
         outOfStockProducts.forEach(p => {
             toast({
                 variant: 'destructive',
@@ -114,7 +119,7 @@ import { useToast } from "@/hooks/use-toast";
             })
         });
 
-        const lowStockProducts = allProducts.filter(p => p.freeToUse > 0 && p.freeToUse < 26);
+        const lowStockProducts = products.filter(p => p.freeToUse > 0 && p.freeToUse < 26);
         lowStockProducts.forEach(p => {
             toast({
                 variant: 'destructive',
@@ -122,7 +127,7 @@ import { useToast } from "@/hooks/use-toast";
                 description: `${p.product} has only ${p.freeToUse} items left in free to use stock.`,
             })
         })
-    }, [toast]);
+    }, [toast, products]);
 
     useEffect(() => {
         if (urlFilter) {
@@ -130,51 +135,90 @@ import { useToast } from "@/hooks/use-toast";
         }
     }, [urlFilter]);
 
+    const handleProductSelect = (product: Product) => {
+        setSelectedProduct(product);
+        setIsDialogOpen(true);
+    };
+
+    const handleUpdateStock = (updatedProduct: Product) => {
+        setProducts(prevProducts => prevProducts.map(p => p.barCodeNumber === updatedProduct.barCodeNumber ? updatedProduct : p));
+        setIsDialogOpen(false);
+        toast({
+            title: 'Stock Updated',
+            description: `${updatedProduct.product} has been updated.`,
+        });
+    };
+
+    const handleDeleteStock = (productToDelete: Product) => {
+        setProducts(prevProducts => prevProducts.filter(p => p.barCodeNumber !== productToDelete.barCodeNumber));
+        setIsDialogOpen(false);
+        toast({
+            title: 'Product Deleted',
+            description: `${productToDelete.product} has been removed from stock.`,
+        });
+    };
+
     const getFilteredProducts = () => {
         switch (filter) {
             case 'in-stock':
-                return allProducts.filter(p => p.onHand > 0);
+                return products.filter(p => p.onHand > 0);
             case 'out-of-stock':
-                return allProducts.filter(p => p.onHand === 0);
+                return products.filter(p => p.onHand === 0);
             default:
-                return allProducts;
+                return products;
         }
     }
 
     const filteredProducts = getFilteredProducts();
 
     return (
-      <Card>
-        <CardHeader>
-            <div className="flex items-center justify-between">
-                <div>
-                    <CardTitle>Product Stock</CardTitle>
-                    <CardDescription>
-                        An overview of your current product inventory.
-                    </CardDescription>
+      <>
+        <Card>
+            <CardHeader>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <CardTitle>Product Stock</CardTitle>
+                        <CardDescription>
+                            An overview of your current product inventory.
+                        </CardDescription>
+                    </div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline">
+                                <Filter className="mr-2 h-4 w-4" />
+                                Filter ({filter})
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuRadioGroup value={filter} onValueChange={(value) => setFilter(value as StockStatus)}>
+                                <DropdownMenuRadioItem value="all">All</DropdownMenuRadioItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuRadioItem value="in-stock">In Stock</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="out-of-stock">Out of Stock</DropdownMenuRadioItem>
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline">
-                            <Filter className="mr-2 h-4 w-4" />
-                            Filter ({filter})
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuRadioGroup value={filter} onValueChange={(value) => setFilter(value as StockStatus)}>
-                            <DropdownMenuRadioItem value="all">All</DropdownMenuRadioItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuRadioItem value="in-stock">In Stock</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="out-of-stock">Out of Stock</DropdownMenuRadioItem>
-                        </DropdownMenuRadioGroup>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
-        </CardHeader>
-        <CardContent>
-           <ProductStockTable products={filteredProducts} />
-        </CardContent>
-      </Card>
+            </CardHeader>
+            <CardContent>
+            <ProductStockTable products={filteredProducts} onProductSelect={handleProductSelect} />
+            </CardContent>
+        </Card>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Edit Stock: {selectedProduct?.product}</DialogTitle>
+                </DialogHeader>
+                {selectedProduct && (
+                    <EditStockForm 
+                        product={selectedProduct} 
+                        onUpdate={handleUpdateStock}
+                        onDelete={handleDeleteStock}
+                    />
+                )}
+            </DialogContent>
+        </Dialog>
+      </>
     )
   }
 

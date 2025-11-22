@@ -44,7 +44,7 @@ type SummaryData = {
     warehouseSummaries: {
         warehouseName: string;
         totalProfit: number;
-        dailyData: { day: string; profit: number }[];
+        summary: string;
     }[];
 }
 
@@ -54,7 +54,10 @@ export default function FinancialSummaryPage() {
     React.useEffect(() => {
         const warehouseSummaries = Object.entries(warehouseData).map(([name, data]) => {
             const totalProfit = data.reduce((acc, curr) => acc + curr.profit, 0);
-            return { warehouseName: name, totalProfit, dailyData: data };
+            const bestDay = data.reduce((max, day) => day.profit > max.profit ? day : max, data[0]);
+            const worstDay = data.reduce((min, day) => day.profit < min.profit ? day : min, data[0]);
+            const summary = `Weekly profit of $${totalProfit.toFixed(2)}. Best day was ${bestDay.day} ($${bestDay.profit.toFixed(2)}) and worst day was ${worstDay.day} ($${worstDay.profit.toFixed(2)}).`
+            return { warehouseName: name, totalProfit, summary };
         });
 
         const totalProfit = warehouseSummaries.reduce((acc, curr) => acc + curr.totalProfit, 0);
@@ -101,40 +104,30 @@ export default function FinancialSummaryPage() {
                             </div>
                         </div>
 
-                        <div className="space-y-4">
+                        <div>
                             <h2 className="text-xl font-bold text-foreground mb-2">Warehouse Breakdown</h2>
-                            {summary.warehouseSummaries.map((ws, index) => (
-                                <Card key={index}>
-                                    <CardHeader>
-                                        <CardTitle>{ws.warehouseName}</CardTitle>
-                                        <CardDescription>
-                                            <Badge variant={ws.totalProfit >= 0 ? 'success' : 'destructive'}>
-                                                Weekly Profit: ${ws.totalProfit.toFixed(2)}
-                                            </Badge>
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                         <Table>
-                                            <TableHeader>
-                                                <TableRow>
-                                                    <TableHead>Day</TableHead>
-                                                    <TableHead className="text-right">Profit</TableHead>
-                                                </TableRow>
-                                            </TableHeader>
-                                            <TableBody>
-                                                {ws.dailyData.map(d => (
-                                                    <TableRow key={d.day}>
-                                                        <TableCell>{d.day}</TableCell>
-                                                        <TableCell className={`text-right ${d.profit >= 0 ? 'text-success-foreground' : 'text-destructive'}`}>
-                                                            ${d.profit.toFixed(2)}
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </CardContent>
-                                </Card>
-                            ))}
+                            <Card>
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Warehouse</TableHead>
+                                            <TableHead className="text-right">Total Profit</TableHead>
+                                            <TableHead>Weekly Summary</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {summary.warehouseSummaries.map((ws) => (
+                                            <TableRow key={ws.warehouseName}>
+                                                <TableCell className="font-medium">{ws.warehouseName}</TableCell>
+                                                <TableCell className={`text-right font-semibold ${ws.totalProfit >= 0 ? 'text-success-foreground' : 'text-destructive'}`}>
+                                                    ${ws.totalProfit.toFixed(2)}
+                                                </TableCell>
+                                                <TableCell className="text-muted-foreground">{ws.summary}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </Card>
                         </div>
                     </div>
                 )}

@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -83,12 +84,6 @@ export function LoginForm() {
             <FormItem>
               <div className="flex items-center">
                 <FormLabel>Password</FormLabel>
-                <Link
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm text-primary/80 hover:text-primary underline"
-                >
-                  Forgot your password?
-                </Link>
               </div>
               <FormControl>
                 <div className="relative">
@@ -96,6 +91,14 @@ export function LoginForm() {
                   <Input type="password" placeholder="••••••••" {...field} className="pl-10" />
                 </div>
               </FormControl>
+              <div className="text-right">
+                <Link
+                  href="/forgot-password"
+                  className="inline-block text-sm text-primary/80 hover:text-primary underline"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
               <FormMessage />
             </FormItem>
           )}

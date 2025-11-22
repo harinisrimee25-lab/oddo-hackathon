@@ -4,7 +4,6 @@ import {
   Home,
   Package2,
   Users,
-  Search,
   PanelLeft,
   Settings,
   History,
@@ -75,9 +74,9 @@ export default function DashboardLayout({
           )}
         >
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 justify-between">
-            <Link href="/" className={cn("flex items-center gap-2 font-semibold", !isSidebarOpen && "hidden")}>
+            <Link href="/" className="flex items-center gap-2 font-semibold">
               <Package2 className="h-6 w-6" />
-              <span className="">Stock Master</span>
+              <span className={cn(!isSidebarOpen && "hidden")}>Stock Master</span>
             </Link>
             <Button
               variant="outline"

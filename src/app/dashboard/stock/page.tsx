@@ -98,7 +98,7 @@ import { Badge } from "@/components/ui/badge";
 
     const displayedProducts = filter === 'out-of-stock' 
         ? allProducts.filter(p => p.onHand === 0)
-        : allProducts;
+        : allProducts.filter(p => p.onHand > 0);
 
     const cardTitle = filter === 'out-of-stock' ? 'Out of Stock Products' : 'Product Stock';
     const cardDescription = filter === 'out-of-stock'
@@ -119,3 +119,4 @@ import { Badge } from "@/components/ui/badge";
       </Card>
     )
   }
+

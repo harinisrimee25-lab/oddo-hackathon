@@ -51,6 +51,8 @@ export function SignUpForm() {
     // In a real app, you'd send this to your server.
     // For this prototype, we'll save the name to localStorage.
     localStorage.setItem('userName', values.name);
+    localStorage.setItem('userEmail', values.email);
+
 
     setTimeout(() => {
       setIsSubmitting(false);

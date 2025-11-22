@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Loader2, Edit } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Suspense } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -20,7 +21,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -42,7 +42,7 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
-export default function ProfilePage() {
+function ProfilePageComponent() {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [user, setUser] = React.useState({
@@ -75,6 +75,7 @@ export default function ProfilePage() {
     setTimeout(() => {
         setUser(data);
         localStorage.setItem('userName', data.ownerName);
+        localStorage.setItem('userEmail', data.email);
         window.dispatchEvent(new Event('storage')); // To update header
         setIsSubmitting(false);
         setIsEditing(false);
@@ -201,4 +202,12 @@ export default function ProfilePage() {
       </Form>
     </Card>
   );
+}
+
+export default function ProfilePage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ProfilePageComponent />
+        </Suspense>
+    )
 }

@@ -14,6 +14,12 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs';
 
 const deliveriesData = [
   {
@@ -46,6 +52,56 @@ const deliveriesData = [
   },
 ];
 
+const pendingDeliveries = deliveriesData.filter(
+  (d) => d.deliveryStatus === 'Pending' || d.deliveryStatus === 'Shipped'
+);
+const deliveredDeliveries = deliveriesData.filter(
+  (d) => d.deliveryStatus === 'Delivered'
+);
+
+function DeliveryTable({ deliveries }: { deliveries: typeof deliveriesData }) {
+    return (
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>Product Name</TableHead>
+                    <TableHead className="text-right">Quantity</TableHead>
+                    <TableHead className="text-right">Cost Per Item</TableHead>
+                    <TableHead className="text-right">Total Amount</TableHead>
+                    <TableHead className="text-center">Delivery Status</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {deliveries.map((item) => (
+                    <TableRow key={item.productName}>
+                        <TableCell className="font-medium">{item.productName}</TableCell>
+                        <TableCell className="text-right">{item.quantity}</TableCell>
+                        <TableCell className="text-right">
+                            ${item.costPerItem.toFixed(2)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                            ${item.totalAmount.toFixed(2)}
+                        </TableCell>
+                        <TableCell className="text-center">
+                            <Badge
+                                variant={
+                                    item.deliveryStatus === 'Delivered'
+                                        ? 'default'
+                                        : item.deliveryStatus === 'Shipped'
+                                            ? 'secondary'
+                                            : 'outline'
+                                }
+                            >
+                                {item.deliveryStatus}
+                            </Badge>
+                        </TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    )
+}
+
 export default function DeliveriesPage() {
   return (
     <Card>
@@ -56,44 +112,18 @@ export default function DeliveriesPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Product Name</TableHead>
-              <TableHead className="text-right">Quantity</TableHead>
-              <TableHead className="text-right">Cost Per Item</TableHead>
-              <TableHead className="text-right">Total Amount</TableHead>
-              <TableHead className="text-center">Delivery Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {deliveriesData.map((item) => (
-              <TableRow key={item.productName}>
-                <TableCell className="font-medium">{item.productName}</TableCell>
-                <TableCell className="text-right">{item.quantity}</TableCell>
-                <TableCell className="text-right">
-                  ${item.costPerItem.toFixed(2)}
-                </TableCell>
-                <TableCell className="text-right">
-                  ${item.totalAmount.toFixed(2)}
-                </TableCell>
-                <TableCell className="text-center">
-                  <Badge
-                    variant={
-                      item.deliveryStatus === 'Delivered'
-                        ? 'default'
-                        : item.deliveryStatus === 'Shipped'
-                        ? 'secondary'
-                        : 'outline'
-                    }
-                  >
-                    {item.deliveryStatus}
-                  </Badge>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <Tabs defaultValue="pending">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="pending">Pending</TabsTrigger>
+            <TabsTrigger value="delivered">Delivered</TabsTrigger>
+          </TabsList>
+          <TabsContent value="pending">
+            <DeliveryTable deliveries={pendingDeliveries} />
+          </TabsContent>
+          <TabsContent value="delivered">
+            <DeliveryTable deliveries={deliveredDeliveries} />
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );

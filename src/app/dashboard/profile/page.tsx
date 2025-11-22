@@ -5,7 +5,7 @@ import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Edit } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -48,6 +48,7 @@ const defaultValues: Partial<ProfileFormValues> = {
 };
 
 export default function ProfilePage() {
+  const [isEditing, setIsEditing] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const { toast } = useToast();
   const form = useForm<ProfileFormValues>({
@@ -61,6 +62,7 @@ export default function ProfilePage() {
     console.log(data);
     setTimeout(() => {
         setIsSubmitting(false);
+        setIsEditing(false);
         toast({
           title: 'Profile Updated',
           description: 'Your profile has been updated successfully.',
@@ -70,11 +72,19 @@ export default function ProfilePage() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>My Profile</CardTitle>
-        <CardDescription>
-          Update your shop information and personal details.
-        </CardDescription>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+            <CardTitle>My Profile</CardTitle>
+            <CardDescription>
+            Update your shop information and personal details.
+            </CardDescription>
+        </div>
+        {!isEditing && (
+            <Button variant="outline" onClick={() => setIsEditing(true)}>
+                <Edit className="mr-2 h-4 w-4" />
+                Edit Profile
+            </Button>
+        )}
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -98,7 +108,7 @@ export default function ProfilePage() {
                 <FormItem>
                   <FormLabel>Shop Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your shop name" {...field} />
+                    <Input placeholder="Your shop name" {...field} disabled={!isEditing} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -111,7 +121,7 @@ export default function ProfilePage() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your email" {...field} />
+                    <Input placeholder="Your email" {...field} disabled={!isEditing} />
                   </FormControl>
                   <FormDescription>
                     This is the email address you use to log in.
@@ -131,6 +141,7 @@ export default function ProfilePage() {
                       placeholder="Tell us a little bit about your shop"
                       className="resize-none"
                       {...field}
+                      disabled={!isEditing}
                     />
                   </FormControl>
                   <FormMessage />
@@ -138,11 +149,18 @@ export default function ProfilePage() {
               )}
             />
           </CardContent>
-          <CardFooter className="border-t px-6 py-4">
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Save Changes
-            </Button>
+          <CardFooter className="border-t px-6 py-4 flex justify-between">
+            {isEditing ? (
+                <>
+                    <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Save Changes
+                    </Button>
+                    <Button variant="ghost" onClick={() => setIsEditing(false)}>Cancel</Button>
+                </>
+            ) : (
+                <Button variant="destructive">Sign Out</Button>
+            )}
           </CardFooter>
         </form>
       </Form>

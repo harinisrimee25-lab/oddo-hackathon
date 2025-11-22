@@ -23,9 +23,12 @@ import {
     TabsTrigger,
 } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { PlusCircle, Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { NewAdjustmentForm } from '@/components/dashboard/new-adjustment-form';
 
-const allAdjustments = {
+const initialAdjustments = {
     damage: [
         {
             productName: 'Laptop Pro',
@@ -92,7 +95,7 @@ function AdjustmentTable({ data }: { data: Adjustment[] }) {
             </TableHeader>
             <TableBody>
                 {data.map((item) => (
-                    <TableRow key={item.productName + item.date}>
+                    <TableRow key={item.productName + item.date + item.reason}>
                         <TableCell className="font-medium">{item.productName}</TableCell>
                         <TableCell>{item.barcodeNumber}</TableCell>
                         <TableCell>{item.date}</TableCell>
@@ -107,7 +110,9 @@ function AdjustmentTable({ data }: { data: Adjustment[] }) {
 
 export default function AdjustmentsPage() {
     const [searchTerm, setSearchTerm] = React.useState('');
+    const [allAdjustments, setAllAdjustments] = React.useState(initialAdjustments);
     const [filteredData, setFilteredData] = React.useState(allAdjustments);
+    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
     React.useEffect(() => {
         if (!searchTerm) {
@@ -133,7 +138,22 @@ export default function AdjustmentsPage() {
         };
 
         setFilteredData(filtered);
-    }, [searchTerm]);
+    }, [searchTerm, allAdjustments]);
+
+    const handleAddAdjustment = (newAdjustment: Omit<Adjustment, 'date'> & { type: 'damage' | 'shrinkage' | 'expiry' }) => {
+        const adjustmentWithDate = {
+            ...newAdjustment,
+            date: new Date().toISOString().split('T')[0],
+        };
+        
+        setAllAdjustments(prev => {
+            const newAdjustments = { ...prev };
+            newAdjustments[newAdjustment.type] = [...newAdjustments[newAdjustment.type], adjustmentWithDate];
+            return newAdjustments;
+        });
+
+        setIsDialogOpen(false);
+    };
 
     return (
         <Card>
@@ -145,14 +165,30 @@ export default function AdjustmentsPage() {
                             Track adjustments due to damage, shrinkage, or expiry.
                         </CardDescription>
                     </div>
-                    <div className="relative w-full max-w-sm">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input 
-                            placeholder="Search by product name or barcode..."
-                            className="pl-10"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+                    <div className="flex items-center gap-2">
+                        <div className="relative w-full max-w-sm">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input 
+                                placeholder="Search by product name or barcode..."
+                                className="pl-10"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+                        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                            <DialogTrigger asChild>
+                                <Button>
+                                    <PlusCircle className="mr-2 h-4 w-4" />
+                                    New Adjustment
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Create New Adjustment</DialogTitle>
+                                </DialogHeader>
+                                <NewAdjustmentForm onAddAdjustment={handleAddAdjustment} />
+                            </DialogContent>
+                        </Dialog>
                     </div>
                 </div>
             </CardHeader>

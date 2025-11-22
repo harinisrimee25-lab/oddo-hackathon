@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useParams } from 'next/navigation';
 
 // Mock data - in a real app, you would fetch this based on warehouseId
 const warehouseData = {
@@ -72,8 +73,9 @@ const warehouseData = {
 };
 
 
-export default function WarehouseDetailsPage({ params }: { params: { warehouseId: string } }) {
-    const { warehouseId } = params;
+export default function WarehouseDetailsPage() {
+    const params = useParams();
+    const warehouseId = params.warehouseId as string;
     const data = warehouseData[warehouseId as keyof typeof warehouseData];
 
     if (!data) {

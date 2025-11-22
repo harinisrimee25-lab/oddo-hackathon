@@ -72,6 +72,22 @@ export default function DashboardPage() {
         </Card>
       </Link>
 
+      <Link href="/dashboard/internal-transfers" className="col-span-1 md:col-span-2 lg:col-span-4 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg group">
+        <Card className="transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Scheduled Internal Transfer
+              </CardTitle>
+              <ArrowRightLeft className="h-4 w-4 text-muted-foreground group-hover:text-accent-foreground" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-muted-foreground mb-4 group-hover:text-accent-foreground">
+                Manage and schedule stock movements between your warehouses.
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+        
       <Card className="col-span-1 md:col-span-2 lg:col-span-4">
         <CardHeader>
           <div className="flex items-center gap-4">
@@ -131,22 +147,6 @@ export default function DashboardPage() {
           </div>
         </CardContent>
       </Card>
-
-      <Link href="/dashboard/internal-transfers" className="col-span-1 md:col-span-2 lg:col-span-4 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg group">
-        <Card className="transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Scheduled Internal Transfer
-              </CardTitle>
-              <ArrowRightLeft className="h-4 w-4 text-muted-foreground group-hover:text-accent-foreground" />
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground mb-4 group-hover:text-accent-foreground">
-                Manage and schedule stock movements between your warehouses.
-              </p>
-            </CardContent>
-          </Card>
-        </Link>
     </div>
   );
 }

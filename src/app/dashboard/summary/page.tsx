@@ -36,6 +36,26 @@ const warehouseData = {
     ],
 };
 
+const initialPurchaseData = [
+  {
+    productName: '4K Monitor',
+    date: '2024-05-10',
+    quantity: 10,
+    pricePerItem: 400,
+    totalAmount: 4000,
+    barcodeNumber: '8901234567920',
+  },
+  {
+    productName: 'Mechanical Keyboard',
+    date: '2024-05-11',
+    quantity: 15,
+    pricePerItem: 130,
+    totalAmount: 1950,
+    barcodeNumber: '8901234567913',
+  },
+];
+
+
 type SummaryData = {
     overallSummary: string;
     totalProfit: number;
@@ -78,60 +98,97 @@ export default function FinancialSummaryPage() {
     }, []);
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Financial Summary</CardTitle>
-                <CardDescription>
-                    A simple analysis of your shop's profit and loss across all warehouses for the week.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                {summary && (
-                    <div className="space-y-6">
-                        <div>
-                            <h2 className="text-xl font-bold text-foreground mb-2">Overall Performance</h2>
-                            <p className="text-muted-foreground">{summary.overallSummary}</p>
-                            <div className='flex gap-4 mt-4'>
-                                <Badge variant={summary.totalProfit >= 0 ? 'success' : 'destructive'}>
-                                    Total Profit: ${summary.totalProfit.toFixed(2)}
-                                </Badge>
-                                <Badge variant='secondary'>
-                                    Best Performing: {summary.bestPerformingWarehouse}
-                                </Badge>
-                                <Badge variant='secondary'>
-                                    Lowest Performing: {summary.lowestPerformingWarehouse}
-                                </Badge>
+        <div className="space-y-6">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Financial Summary</CardTitle>
+                    <CardDescription>
+                        A simple analysis of your shop's profit and loss across all warehouses for the week.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    {summary && (
+                        <div className="space-y-6">
+                            <div>
+                                <h2 className="text-xl font-bold text-foreground mb-2">Overall Performance</h2>
+                                <p className="text-muted-foreground">{summary.overallSummary}</p>
+                                <div className='flex gap-4 mt-4'>
+                                    <Badge variant={summary.totalProfit >= 0 ? 'success' : 'destructive'}>
+                                        Total Profit: ${summary.totalProfit.toFixed(2)}
+                                    </Badge>
+                                    <Badge variant='secondary'>
+                                        Best Performing: {summary.bestPerformingWarehouse}
+                                    </Badge>
+                                    <Badge variant='secondary'>
+                                        Lowest Performing: {summary.lowestPerformingWarehouse}
+                                    </Badge>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h2 className="text-xl font-bold text-foreground mb-2">Warehouse Breakdown</h2>
+                                <Card>
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>Warehouse</TableHead>
+                                                <TableHead className="text-right">Total Profit</TableHead>
+                                                <TableHead>Weekly Summary</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {summary.warehouseSummaries.map((ws) => (
+                                                <TableRow key={ws.warehouseName}>
+                                                    <TableCell className="font-medium">{ws.warehouseName}</TableCell>
+                                                    <TableCell className={`text-right font-semibold ${ws.totalProfit >= 0 ? 'text-success-foreground' : 'text-destructive'}`}>
+                                                        ${ws.totalProfit.toFixed(2)}
+                                                    </TableCell>
+                                                    <TableCell className="text-muted-foreground">{ws.summary}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </Card>
                             </div>
                         </div>
+                    )}
+                </CardContent>
+            </Card>
 
-                        <div>
-                            <h2 className="text-xl font-bold text-foreground mb-2">Warehouse Breakdown</h2>
-                            <Card>
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead>Warehouse</TableHead>
-                                            <TableHead className="text-right">Total Profit</TableHead>
-                                            <TableHead>Weekly Summary</TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        {summary.warehouseSummaries.map((ws) => (
-                                            <TableRow key={ws.warehouseName}>
-                                                <TableCell className="font-medium">{ws.warehouseName}</TableCell>
-                                                <TableCell className={`text-right font-semibold ${ws.totalProfit >= 0 ? 'text-success-foreground' : 'text-destructive'}`}>
-                                                    ${ws.totalProfit.toFixed(2)}
-                                                </TableCell>
-                                                <TableCell className="text-muted-foreground">{ws.summary}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </Card>
-                        </div>
-                    </div>
-                )}
-            </CardContent>
-        </Card>
+             <Card>
+                <CardHeader>
+                    <CardTitle>Purchase History</CardTitle>
+                    <CardDescription>
+                        A list of all items bought for the shop.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                   <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Product Name</TableHead>
+                                <TableHead>Barcode Number</TableHead>
+                                <TableHead>Date</TableHead>
+                                <TableHead className="text-right">Quantity</TableHead>
+                                <TableHead className="text-right">Price Per Item</TableHead>
+                                <TableHead className="text-right">Total Amount</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {initialPurchaseData.map((item) => (
+                                <TableRow key={item.barcodeNumber}>
+                                    <TableCell className="font-medium">{item.productName}</TableCell>
+                                    <TableCell>{item.barcodeNumber}</TableCell>
+                                    <TableCell>{item.date}</TableCell>
+                                    <TableCell className="text-right">{item.quantity}</TableCell>
+                                    <TableCell className="text-right">${item.pricePerItem.toFixed(2)}</TableCell>
+                                    <TableCell className="text-right">${item.totalAmount.toFixed(2)}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+        </div>
     );
 }

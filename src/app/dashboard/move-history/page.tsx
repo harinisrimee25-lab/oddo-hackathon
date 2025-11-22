@@ -1,3 +1,6 @@
+
+'use client';
+import React, { useState } from 'react';
 import {
     Card,
     CardContent,
@@ -14,14 +17,16 @@ import {
     TableRow,
   } from '@/components/ui/table';
   import { Badge } from '@/components/ui/badge';
-  import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-  } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react';
+import { Filter, PlusCircle } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
   const moveHistoryData = [
     {
@@ -62,14 +67,11 @@ import { PlusCircle } from 'lucide-react';
       },
   ];
 
-  const inTransitHistory = moveHistoryData.filter(
-    (d) => d.status === 'In Transit' || d.status === 'Pending'
-  );
-  const completedHistory = moveHistoryData.filter(
-    (d) => d.status === 'Completed'
-  );
+  type MoveHistory = typeof moveHistoryData[0];
+  type MoveStatus = 'Pending' | 'In Transit' | 'Completed' | 'All';
 
-  function MoveHistoryTable({ moves }: { moves: typeof moveHistoryData }) {
+
+  function MoveHistoryTable({ moves }: { moves: MoveHistory[] }) {
     return (
         <Table>
             <TableHeader>
@@ -98,7 +100,7 @@ import { PlusCircle } from 'lucide-react';
                         item.status === 'Completed'
                         ? 'success'
                         : item.status === 'In Transit'
-                        ? 'secondary'
+                        ? 'warning'
                         : 'destructive'
                     }
                     >
@@ -113,6 +115,13 @@ import { PlusCircle } from 'lucide-react';
   }
   
   export default function MoveHistoryPage() {
+    const [filterStatus, setFilterStatus] = useState<MoveStatus>('All');
+    
+    const filteredMoves = moveHistoryData.filter((d) => {
+        if (filterStatus === 'All') return true;
+        return d.status === filterStatus;
+    });
+
     return (
       <Card>
         <CardHeader>
@@ -123,25 +132,33 @@ import { PlusCircle } from 'lucide-react';
                         Track all inventory movements.
                     </CardDescription>
                 </div>
-                <Button>
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    New Movement
-                </Button>
+                <div className="flex items-center gap-2">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline">
+                                <Filter className="mr-2 h-4 w-4" />
+                                Filter ({filterStatus})
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuRadioGroup value={filterStatus} onValueChange={(value) => setFilterStatus(value as MoveStatus)}>
+                                <DropdownMenuRadioItem value="All">All</DropdownMenuRadioItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuRadioItem value="Pending">Pending</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="In Transit">In Transit</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="Completed">Completed</DropdownMenuRadioItem>
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <Button>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        New Movement
+                    </Button>
+                </div>
             </div>
         </CardHeader>
         <CardContent>
-            <Tabs defaultValue="in-transit">
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="in-transit">In-Transit</TabsTrigger>
-                    <TabsTrigger value="completed">Completed</TabsTrigger>
-                </TabsList>
-                <TabsContent value="in-transit">
-                    <MoveHistoryTable moves={inTransitHistory} />
-                </TabsContent>
-                <TabsContent value="completed">
-                    <MoveHistoryTable moves={completedHistory} />
-                </TabsContent>
-            </Tabs>
+            <MoveHistoryTable moves={filteredMoves} />
         </CardContent>
       </Card>
     );

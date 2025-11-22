@@ -5,7 +5,7 @@ import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { Loader2, Edit } from 'lucide-react';
+import { Loader2, Edit, Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
@@ -31,6 +31,14 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const profileFormSchema = z.object({
   ownerName: z.string().min(2, {
@@ -43,16 +51,40 @@ const profileFormSchema = z.object({
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
+type ChartFilter = 'today' | 'this week' | 'this month' | 'this year';
 
-const chartData = [
-    { day: "Monday", profit: 1860 },
-    { day: "Tuesday", profit: -305 },
-    { day: "Wednesday", profit: 2370 },
-    { day: "Thursday", profit: 730 },
-    { daycen: "Friday", profit: -500 },
-    { day: "Saturday", profit: 2480 },
-    { day: "Sunday", profit: 3200 },
-]
+const chartData = {
+    'this week': [
+        { day: "Monday", profit: 1860 },
+        { day: "Tuesday", profit: -305 },
+        { day: "Wednesday", profit: 2370 },
+        { day: "Thursday", profit: 730 },
+        { day: "Friday", profit: -500 },
+        { day: "Saturday", profit: 2480 },
+        { day: "Sunday", profit: 3200 },
+    ],
+    'today': [
+        { day: new Date().toLocaleDateString('en-US', { weekday: 'long'}), profit: Math.floor(Math.random() * 4000) - 1000 },
+    ],
+    'this month': Array.from({ length: 30 }, (_, i) => ({
+        day: `Day ${i + 1}`,
+        profit: Math.floor(Math.random() * 5000) - 1500,
+    })),
+    'this year': [
+        { day: 'Jan', profit: 15000 },
+        { day: 'Feb', profit: 18000 },
+        { day: 'Mar', profit: 22000 },
+        { day: 'Apr', profit: 17000 },
+        { day: 'May', profit: 25000 },
+        { day: 'Jun', profit: 28000 },
+        { day: 'Jul', profit: 31000 },
+        { day: 'Aug', profit: 29000 },
+        { day: 'Sep', profit: 35000 },
+        { day: 'Oct', profit: 38000 },
+        { day: 'Nov', profit: 42000 },
+        { day: 'Dec', profit: 45000 },
+    ],
+}
    
 const chartConfig = {
     profit: {
@@ -62,24 +94,51 @@ const chartConfig = {
 } satisfies ChartConfig
 
 function CompanyProgressChart() {
+    const [filter, setFilter] = React.useState<ChartFilter>('this week');
+    
+    const currentData = chartData[filter];
+    const dataKey = filter === 'this month' || filter === 'this year' ? 'day' : 'day';
+
     return (
         <Card>
-            <CardHeader>
-                <CardTitle>Company Progress</CardTitle>
-                <CardDescription>Profit and Loss over the last 7 days</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                    <CardTitle>Company Progress</CardTitle>
+                    <CardDescription>Profit and Loss over the selected period</CardDescription>
+                </div>
+                 <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline">
+                            <Filter className="mr-2 h-4 w-4" />
+                            Filter ({filter})
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuRadioGroup value={filter} onValueChange={(value) => setFilter(value as ChartFilter)}>
+                            <DropdownMenuRadioItem value="today">Today</DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value="this week">This Week</DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value="this month">This Month</DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value="this year">This Year</DropdownMenuRadioItem>
+                        </DropdownMenuRadioGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-                    <BarChart accessibilityLayer data={chartData}>
+                    <BarChart accessibilityLayer data={currentData}>
                         <CartesianGrid vertical={false} />
                         <XAxis
-                            dataKey="day"
+                            dataKey={dataKey}
                             tickLine={false}
                             tickMargin={10}
                             axisLine={false}
-                            tickFormatter={(value) => value.slice(0, 3)}
+                            tickFormatter={(value) => {
+                                if (filter === 'this week' || filter === 'today') return value.slice(0, 3);
+                                if (filter === 'this month') return value.startsWith('Day 1') || value.endsWith('5') || value.endsWith('0') ? value.replace('Day ', '') : '';
+                                return value;
+                            }}
                         />
-                        <YAxis />
+                        <YAxis domain={[0, 'auto']} />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent 
@@ -101,7 +160,7 @@ function CompanyProgressChart() {
                             shape={(props) => {
                                 const { x, y, width, height, payload } = props;
                                 const isNegative = payload.profit < 0;
-                                return <rect x={x} y={isNegative ? y : y} width={width} height={Math.abs(height)} fill={isNegative ? "hsl(var(--destructive))" : "hsl(var(--primary))"} rx={4} />;
+                                return <rect x={x} y={isNegative ? y : y - (isNegative ? 0 : height)} width={width} height={Math.abs(height)} fill={isNegative ? "hsl(var(--destructive))" : "hsl(var(--primary))"} rx={4} />;
                             }}
                         />
                     </BarChart>

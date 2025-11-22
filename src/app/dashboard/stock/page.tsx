@@ -1,3 +1,5 @@
+
+'use client';
 import {
     Table,
     TableBody,
@@ -13,8 +15,11 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
+import React from "react";
+import { useSearchParams } from "next/navigation";
+import { Badge } from "@/components/ui/badge";
   
-  const inStockProducts = [
+  const allProducts = [
     {
       product: "Laptop Pro",
       perUnitCost: 1200,
@@ -25,8 +30,8 @@ import {
     {
       product: "Wireless Mouse",
       perUnitCost: 25,
-      onHand: 200,
-      freeToUse: 180,
+      onHand: 0,
+      freeToUse: 0,
       barCodeNumber: "8901234567906",
     },
     {
@@ -46,13 +51,15 @@ import {
     {
       product: "Webcam HD",
       perUnitCost: 80,
-      onHand: 100,
-      freeToUse: 90,
+      onHand: 0,
+      freeToUse: 0,
       barCodeNumber: "8901234567937",
     },
   ];
 
-  function ProductStockTable({ products }: { products: typeof inStockProducts }) {
+  type Product = typeof allProducts[0];
+
+  function ProductStockTable({ products }: { products: Product[] }) {
     return (
         <Table>
             <TableHeader>
@@ -62,6 +69,7 @@ import {
                 <TableHead className="text-right">Per Unit Cost</TableHead>
                 <TableHead className="text-right">On Hand</TableHead>
                 <TableHead className="text-right">Free to Use</TableHead>
+                <TableHead className="text-center">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -72,6 +80,11 @@ import {
                   <TableCell className="text-right">${item.perUnitCost.toFixed(2)}</TableCell>
                   <TableCell className="text-right">{item.onHand}</TableCell>
                   <TableCell className="text-right">{item.freeToUse}</TableCell>
+                  <TableCell className="text-center">
+                    <Badge variant={item.onHand > 0 ? 'default' : 'destructive'}>
+                      {item.onHand > 0 ? 'In Stock' : 'Out of Stock'}
+                    </Badge>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -80,16 +93,28 @@ import {
   }
   
   export default function StockPage() {
+    const searchParams = useSearchParams();
+    const filter = searchParams.get('filter');
+
+    const displayedProducts = filter === 'out-of-stock' 
+        ? allProducts.filter(p => p.onHand === 0)
+        : allProducts;
+
+    const cardTitle = filter === 'out-of-stock' ? 'Out of Stock Products' : 'Product Stock';
+    const cardDescription = filter === 'out-of-stock'
+        ? 'Products that need to be restocked.'
+        : 'An overview of your current product inventory.';
+
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Product Stock</CardTitle>
+          <CardTitle>{cardTitle}</CardTitle>
           <CardDescription>
-            An overview of your current product inventory.
+            {cardDescription}
           </CardDescription>
         </CardHeader>
         <CardContent>
-            <ProductStockTable products={inStockProducts} />
+            <ProductStockTable products={displayedProducts} />
         </CardContent>
       </Card>
     )

@@ -47,12 +47,12 @@ export default function DashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold">455</div>
             <p className="text-xs text-muted-foreground">
-              5 products
+              5 products, 2 out of stock
             </p>
           </CardContent>
         </Card>
       </Link>
-      <Link href="/dashboard/stock">
+      <Link href="/dashboard/stock?filter=out-of-stock">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Out of Stock</CardTitle>

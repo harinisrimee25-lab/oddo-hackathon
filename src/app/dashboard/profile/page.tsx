@@ -118,7 +118,6 @@ function CompanyProgressChart() {
              <Card>
                 <CardHeader>
                     <CardTitle>Business Trends</CardTitle>
-                    <CardDescription>Loading chart data...</CardDescription>
                 </CardHeader>
                 <CardContent className="min-h-[200px] w-full flex items-center justify-center">
                     <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -135,7 +134,6 @@ function CompanyProgressChart() {
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                     <CardTitle>Business Trends</CardTitle>
-                    <CardDescription>Profit and Loss over the selected period</CardDescription>
                 </div>
                  <DropdownMenu>
                     <DropdownMenuTrigger asChild>

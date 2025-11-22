@@ -14,7 +14,13 @@ import {
     TableRow,
   } from '@/components/ui/table';
   import { Badge } from '@/components/ui/badge';
-  
+  import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+  } from '@/components/ui/tabs';
+
   const moveHistoryData = [
     {
       reference: 'WH-IN-2024-00125',
@@ -53,6 +59,56 @@ import {
         status: 'Pending',
       },
   ];
+
+  const inTransitHistory = moveHistoryData.filter(
+    (d) => d.status === 'In Transit' || d.status === 'Pending'
+  );
+  const completedHistory = moveHistoryData.filter(
+    (d) => d.status === 'Completed'
+  );
+
+  function MoveHistoryTable({ moves }: { moves: typeof moveHistoryData }) {
+    return (
+        <Table>
+            <TableHeader>
+            <TableRow>
+                <TableHead>Reference</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>From</TableHead>
+                <TableHead>To</TableHead>
+                <TableHead className="text-right">Quantity</TableHead>
+                <TableHead className="text-center">Status</TableHead>
+            </TableRow>
+            </TableHeader>
+            <TableBody>
+            {moves.map((item) => (
+                <TableRow key={item.reference}>
+                <TableCell className="font-medium">{item.reference}</TableCell>
+                <TableCell>{item.date}</TableCell>
+                <TableCell>{item.contact}</TableCell>
+                <TableCell>{item.from}</TableCell>
+                <TableCell>{item.to}</TableCell>
+                <TableCell className="text-right">{item.quantity}</TableCell>
+                <TableCell className="text-center">
+                    <Badge
+                    variant={
+                        item.status === 'Completed'
+                        ? 'default'
+                        : item.status === 'In Transit'
+                        ? 'secondary'
+                        : 'outline'
+                    }
+                    >
+                    {item.status}
+                    </Badge>
+                </TableCell>
+                </TableRow>
+            ))}
+            </TableBody>
+        </Table>
+    )
+  }
   
   export default function MoveHistoryPage() {
     return (
@@ -64,44 +120,18 @@ import {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Reference</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Contact</TableHead>
-                <TableHead>From</TableHead>
-                <TableHead>To</TableHead>
-                <TableHead className="text-right">Quantity</TableHead>
-                <TableHead className="text-center">Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {moveHistoryData.map((item) => (
-                <TableRow key={item.reference}>
-                  <TableCell className="font-medium">{item.reference}</TableCell>
-                  <TableCell>{item.date}</TableCell>
-                  <TableCell>{item.contact}</TableCell>
-                  <TableCell>{item.from}</TableCell>
-                  <TableCell>{item.to}</TableCell>
-                  <TableCell className="text-right">{item.quantity}</TableCell>
-                  <TableCell className="text-center">
-                    <Badge
-                      variant={
-                        item.status === 'Completed'
-                          ? 'default'
-                          : item.status === 'In Transit'
-                          ? 'secondary'
-                          : 'outline'
-                      }
-                    >
-                      {item.status}
-                    </Badge>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+            <Tabs defaultValue="in-transit">
+                <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="in-transit">In-Transit</TabsTrigger>
+                    <TabsTrigger value="completed">Completed</TabsTrigger>
+                </TabsList>
+                <TabsContent value="in-transit">
+                    <MoveHistoryTable moves={inTransitHistory} />
+                </TabsContent>
+                <TabsContent value="completed">
+                    <MoveHistoryTable moves={completedHistory} />
+                </TabsContent>
+            </Tabs>
         </CardContent>
       </Card>
     );

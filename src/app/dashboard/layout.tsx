@@ -71,24 +71,28 @@ export default function DashboardLayout({
   const router = useRouter();
   const { toast } = useToast();
   const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const [isMounted, setIsMounted] = React.useState(false);
 
   React.useEffect(() => {
-    const root = window.document.documentElement;
-    if (localStorage.getItem('theme') === 'dark') {
-      root.classList.add('dark');
-      setIsDarkMode(true);
+    setIsMounted(true);
+    const storedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+    
+    if (initialTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        setIsDarkMode(true);
     } else {
-      root.classList.remove('dark');
-      setIsDarkMode(false);
+        document.documentElement.classList.remove('dark');
+        setIsDarkMode(false);
     }
   }, []);
 
   const toggleTheme = () => {
-    const root = window.document.documentElement;
-    const newTheme = root.classList.contains('dark') ? 'light' : 'dark';
-    root.classList.toggle('dark');
+    const newTheme = isDarkMode ? 'light' : 'dark';
+    document.documentElement.classList.toggle('dark', !isDarkMode);
     localStorage.setItem('theme', newTheme);
-    setIsDarkMode(newTheme === 'dark');
+    setIsDarkMode(!isDarkMode);
   };
 
   const updateName = () => {
@@ -128,6 +132,10 @@ export default function DashboardLayout({
   };
 
   const isActive = (path: string) => pathname === path;
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div
@@ -468,5 +476,3 @@ export default function DashboardLayout({
     </div>
   );
 }
-
-    

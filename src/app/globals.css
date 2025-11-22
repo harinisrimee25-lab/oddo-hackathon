@@ -34,13 +34,13 @@ body {
     --chart-3: 160 60% 45%;
     --chart-4: 140 75% 58%;
     --chart-5: 200 85% 60%;
-    --sidebar-background: 210 10% 23%; /* Charcoal Sidebar */
-    --sidebar-foreground: 0 0% 95%;
+    --sidebar-background: 210 90% 55%; /* Stronger Blue */
+    --sidebar-foreground: 0 0% 98%; /* White */
     --sidebar-primary: 210 90% 60%;
     --sidebar-primary-foreground: 210 10% 15%;
-    --sidebar-accent: 210 10% 30%;
+    --sidebar-accent: 210 90% 65%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 210 10% 30%;
+    --sidebar-border: 210 90% 60%;
     --sidebar-ring: 210 90% 60%;
   }
   .dark {
@@ -70,13 +70,13 @@ body {
     --chart-3: 160 60% 45%;
     --chart-4: 140 75% 58%;
     --chart-5: 200 85% 60%;
-    --sidebar-background: 210 10% 18%; /* Even Darker Charcoal */
-    --sidebar-foreground: 0 0% 95%;
+    --sidebar-background: 210 90% 55%; /* Stronger Blue */
+    --sidebar-foreground: 0 0% 98%; /* White */
     --sidebar-primary: 210 90% 60%;
     --sidebar-primary-foreground: 210 10% 15%;
-    --sidebar-accent: 210 10% 30%;
+    --sidebar-accent: 210 90% 65%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 210 10% 30%;
+    --sidebar-border: 210 90% 60%;
     --sidebar-ring: 210 90% 60%;
   }
 }
@@ -89,5 +89,3 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
-    

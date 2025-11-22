@@ -73,11 +73,7 @@ export default function DashboardLayout({
             'flex h-full max-h-screen flex-col gap-2',
           )}
         >
-          <div className={cn("flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6", isSidebarOpen ? "justify-between" : "justify-center")}>
-            <Link href="/" className="flex items-center gap-2 font-semibold">
-              <Package2 className="h-6 w-6" />
-              <span className={cn(!isSidebarOpen && "hidden")}>Stock Master</span>
-            </Link>
+          <div className={cn("flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6", isSidebarOpen ? "justify-start" : "justify-center")}>
             <Button
               variant="outline"
               size="icon"
@@ -192,7 +188,7 @@ export default function DashboardLayout({
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Package2 className="h-6 w-6" />
-                  <span className="sr-only">Stock Master</span>
+                  <span className="">Stock Master</span>
                 </Link>
                 <Link
                   href="/dashboard"
@@ -276,6 +272,10 @@ export default function DashboardLayout({
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1">
+            <Link href="/" className="flex items-center gap-2 font-semibold">
+              <Package2 className="h-6 w-6" />
+              <span>Stock Master</span>
+            </Link>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

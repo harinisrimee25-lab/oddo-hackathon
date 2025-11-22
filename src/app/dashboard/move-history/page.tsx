@@ -20,6 +20,8 @@ import {
     TabsList,
     TabsTrigger,
   } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { PlusCircle } from 'lucide-react';
 
   const moveHistoryData = [
     {
@@ -114,10 +116,18 @@ import {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Move History</CardTitle>
-          <CardDescription>
-            Track all inventory movements.
-          </CardDescription>
+            <div className="flex items-center justify-between">
+                <div>
+                    <CardTitle>Move History</CardTitle>
+                    <CardDescription>
+                        Track all inventory movements.
+                    </CardDescription>
+                </div>
+                <Button>
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    New Movement
+                </Button>
+            </div>
         </CardHeader>
         <CardContent>
             <Tabs defaultValue="in-transit">

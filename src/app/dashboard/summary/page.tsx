@@ -140,7 +140,7 @@ export default function FinancialSummaryPage() {
                                             {summary.warehouseSummaries.map((ws) => (
                                                 <TableRow key={ws.warehouseName}>
                                                     <TableCell className="font-medium">{ws.warehouseName}</TableCell>
-                                                    <TableCell className={`text-right font-semibold ${ws.totalProfit >= 0 ? 'text-success-foreground' : 'text-destructive'}`}>
+                                                    <TableCell className={`text-right font-semibold ${ws.totalProfit >= 0 ? 'text-green-700 dark:text-green-400' : 'text-red-600 dark:text-red-500'}`}>
                                                         ${ws.totalProfit.toFixed(2)}
                                                     </TableCell>
                                                     <TableCell className="text-muted-foreground">{ws.summary}</TableCell>

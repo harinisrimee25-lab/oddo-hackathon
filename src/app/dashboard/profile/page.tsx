@@ -6,7 +6,7 @@ import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { Loader2, Edit, Filter } from 'lucide-react';
+import { Loader2, Edit, Filter, Warehouse } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ReferenceLine, Cell } from "recharts"
@@ -53,6 +53,7 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 type ChartFilter = 'today' | 'this week' | 'this month' | 'this year';
+type WarehouseFilter = 'All Warehouses' | 'Main Warehouse' | 'Secondary Warehouse' | 'West Coast Hub';
 
 const staticChartData = {
     'this week': [
@@ -95,8 +96,11 @@ const chartConfig = {
     }
 } satisfies ChartConfig
 
+const warehouseOptions: WarehouseFilter[] = ['All Warehouses', 'Main Warehouse', 'Secondary Warehouse', 'West Coast Hub'];
+
 function CompanyProgressChart() {
     const [filter, setFilter] = React.useState<ChartFilter>('this week');
+    const [warehouseFilter, setWarehouseFilter] = React.useState<WarehouseFilter>('All Warehouses');
     const [chartData, setChartData] = React.useState<typeof staticChartData & { today: { day: string, profit: number }[] }>();
 
     React.useEffect(() => {
@@ -112,6 +116,39 @@ function CompanyProgressChart() {
         ];
         setChartData({ ...staticChartData, today: todayData });
     }, []);
+
+    React.useEffect(() => {
+        if (!chartData) return;
+
+        const newChartData = { ...chartData };
+
+        if (warehouseFilter !== 'All Warehouses') {
+            const multiplier = Math.random() * (1.5 - 0.5) + 0.5; // Random multiplier between 0.5 and 1.5
+            Object.keys(newChartData).forEach(key => {
+                const dataKey = key as keyof typeof newChartData;
+                newChartData[dataKey] = newChartData[dataKey].map(d => ({...d, profit: Math.floor(d.profit * multiplier)}));
+            });
+        } else {
+            // Reset to original data when 'All Warehouses' is selected
+            const todayData = [
+                { day: '9 AM', profit: Math.floor(Math.random() * 1000) - 200 },
+                { day: '10 AM', profit: Math.floor(Math.random() * 1000) - 200 },
+                { day: '11 AM', profit: Math.floor(Math.random() * 1000) - 200 },
+                { day: '12 PM', profit: Math.floor(Math.random() * 1000) - 200 },
+                { day: '1 PM', profit: Math.floor(Math.random() * 1000) - 200 },
+                { day: '2 PM', profit: Math.floor(Math.random() * 1000) - 200 },
+                { day: '3 PM', profit: Math.floor(Math.random() * 1000) - 200 },
+                { day: '4 PM', profit: Math.floor(Math.random() * 1000) - 200 },
+            ];
+            newChartData.today = todayData;
+            newChartData['this week'] = staticChartData['this week'];
+            newChartData['this month'] = staticChartData['this month'];
+            newChartData['this year'] = staticChartData['this year'];
+        }
+        setChartData(newChartData);
+
+    }, [warehouseFilter]);
+
     
     if (!chartData) {
         return (
@@ -135,22 +172,39 @@ function CompanyProgressChart() {
                 <div>
                     <CardTitle>Business Trends</CardTitle>
                 </div>
-                 <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline">
-                            <Filter className="mr-2 h-4 w-4" />
-                            Filter ({filter})
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuRadioGroup value={filter} onValueChange={(value) => setFilter(value as ChartFilter)}>
-                            <DropdownMenuRadioItem value="today">Today</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="this week">This Week</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="this month">This Month</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="this year">This Year</DropdownMenuRadioItem>
-                        </DropdownMenuRadioGroup>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                 <div className="flex gap-2">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline">
+                                <Warehouse className="mr-2 h-4 w-4" />
+                                {warehouseFilter}
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuRadioGroup value={warehouseFilter} onValueChange={(value) => setWarehouseFilter(value as WarehouseFilter)}>
+                                {warehouseOptions.map(option => (
+                                    <DropdownMenuRadioItem key={option} value={option}>{option}</DropdownMenuRadioItem>
+                                ))}
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline">
+                                <Filter className="mr-2 h-4 w-4" />
+                                Filter ({filter})
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuRadioGroup value={filter} onValueChange={(value) => setFilter(value as ChartFilter)}>
+                                <DropdownMenuRadioItem value="today">Today</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="this week">This Week</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="this month">This Month</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="this year">This Year</DropdownMenuRadioItem>
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                 </div>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="min-h-[200px] w-full">

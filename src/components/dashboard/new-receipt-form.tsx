@@ -25,6 +25,9 @@ const newReceiptFormSchema = z.object({
     productName: z.string().min(2, {
         message: 'Product name must be at least 2 characters.',
     }),
+    barcodeNumber: z.string().min(2, {
+        message: 'Barcode number must be at least 2 characters.',
+    }),
     quantity: z.coerce.number().min(1, {
         message: 'Quantity must be at least 1.',
     }),
@@ -48,6 +51,7 @@ export function NewReceiptForm({ onAddReceipt }: NewReceiptFormProps) {
         resolver: zodResolver(newReceiptFormSchema),
         defaultValues: {
             productName: '',
+            barcodeNumber: '',
             quantity: 1,
             pricePerItem: 0,
             type: 'sales',
@@ -113,6 +117,19 @@ export function NewReceiptForm({ onAddReceipt }: NewReceiptFormProps) {
                             <FormLabel>Product Name</FormLabel>
                             <FormControl>
                                 <Input placeholder="e.g. Wireless Mouse" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                 <FormField
+                    control={form.control}
+                    name="barcodeNumber"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Barcode Number</FormLabel>
+                            <FormControl>
+                                <Input placeholder="e.g. 8901234567890" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

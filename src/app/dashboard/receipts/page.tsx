@@ -35,6 +35,7 @@ const initialSalesData = [
     quantity: 2,
     pricePerItem: 1200,
     totalAmount: 2400,
+    barcodeNumber: '8901234567890',
   },
   {
     productName: 'Wireless Mouse',
@@ -42,6 +43,7 @@ const initialSalesData = [
     quantity: 5,
     pricePerItem: 25,
     totalAmount: 125,
+    barcodeNumber: '8901234567906',
   },
 ];
 
@@ -52,6 +54,7 @@ const initialPurchaseData = [
     quantity: 10,
     pricePerItem: 400,
     totalAmount: 4000,
+    barcodeNumber: '8901234567920',
   },
   {
     productName: 'Mechanical Keyboard',
@@ -59,6 +62,7 @@ const initialPurchaseData = [
     quantity: 15,
     pricePerItem: 130,
     totalAmount: 1950,
+    barcodeNumber: '8901234567913',
   },
 ];
 
@@ -68,6 +72,7 @@ type Receipt = {
     quantity: number;
     pricePerItem: number;
     totalAmount: number;
+    barcodeNumber: string;
 };
 
 export default function ReceiptsPage() {
@@ -131,6 +136,7 @@ export default function ReceiptsPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Product Name</TableHead>
+                      <TableHead>Barcode Number</TableHead>
                       <TableHead>Date</TableHead>
                       <TableHead className="text-right">Quantity</TableHead>
                       <TableHead className="text-right">
@@ -145,6 +151,7 @@ export default function ReceiptsPage() {
                         <TableCell className="font-medium">
                           {item.productName}
                         </TableCell>
+                        <TableCell>{item.barcodeNumber}</TableCell>
                         <TableCell>{item.date}</TableCell>
                         <TableCell className="text-right">
                           {item.quantity}
@@ -175,6 +182,7 @@ export default function ReceiptsPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Product Name</TableHead>
+                      <TableHead>Barcode Number</TableHead>
                       <TableHead>Date</TableHead>
                       <TableHead className="text-right">Quantity</TableHead>
                       <TableHead className="text-right">
@@ -189,7 +197,7 @@ export default function ReceiptsPage() {
                         <TableCell className="font-medium">
                           {item.productName}
                         </TableCell>
-
+                        <TableCell>{item.barcodeNumber}</TableCell>
                         <TableCell>{item.date}</TableCell>
                         <TableCell className="text-right">
                           {item.quantity}

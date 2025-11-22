@@ -36,7 +36,7 @@ export default function DashboardPage() {
             Organize outgoing shipments and track deliveries.
           </CardDescription>
           <Button className="mt-4" asChild>
-            <Link href="#">Go to Deliveries</Link>
+            <Link href="/dashboard/deliveries">Go to Deliveries</Link>
           </Button>
         </CardContent>
       </Card>

@@ -94,7 +94,7 @@ export default function DashboardLayout({
                       Receipts
                     </Link>
                     <Link
-                      href="#"
+                      href="/dashboard/deliveries"
                       className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                     >
                       <Truck className="h-4 w-4" />
@@ -198,7 +198,7 @@ export default function DashboardLayout({
                         Receipts
                         </Link>
                         <Link
-                        href="#"
+                        href="/dashboard/deliveries"
                         className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                         >
                         <Truck className="h-5 w-5" />

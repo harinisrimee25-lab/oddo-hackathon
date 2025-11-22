@@ -107,9 +107,13 @@ export default function ProfilePage() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Shop Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your shop name" {...field} disabled={!isEditing} />
-                  </FormControl>
+                  {isEditing ? (
+                    <FormControl>
+                        <Input placeholder="Your shop name" {...field} />
+                    </FormControl>
+                  ) : (
+                    <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -120,9 +124,13 @@ export default function ProfilePage() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your email" {...field} disabled={!isEditing} />
-                  </FormControl>
+                  {isEditing ? (
+                    <FormControl>
+                        <Input placeholder="Your email" {...field} />
+                    </FormControl>
+                  ) : (
+                    <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
+                  )}
                   <FormDescription>
                     This is the email address you use to log in.
                   </FormDescription>
@@ -136,14 +144,17 @@ export default function ProfilePage() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Bio</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Tell us a little bit about your shop"
-                      className="resize-none"
-                      {...field}
-                      disabled={!isEditing}
-                    />
-                  </FormControl>
+                   {isEditing ? (
+                    <FormControl>
+                        <Textarea
+                        placeholder="Tell us a little bit about your shop"
+                        className="resize-none"
+                        {...field}
+                        />
+                    </FormControl>
+                   ) : (
+                    <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
+                   )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -156,7 +167,10 @@ export default function ProfilePage() {
                         {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         Save Changes
                     </Button>
-                    <Button variant="ghost" onClick={() => setIsEditing(false)}>Cancel</Button>
+                    <Button variant="ghost" onClick={() => {
+                        form.reset(defaultValues);
+                        setIsEditing(false)
+                    }}>Cancel</Button>
                 </>
             ) : (
                 <Button variant="destructive">Sign Out</Button>

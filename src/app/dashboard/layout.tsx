@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import {
@@ -49,6 +50,22 @@ export default function DashboardLayout({
   const [isOperationsOpen, setIsOperationsOpen] = React.useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
+  const [userName, setUserName] = React.useState('John Doe');
+
+  React.useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) {
+      setUserName(storedName);
+    }
+  }, []);
+
+  const getInitials = (name: string) => {
+    const names = name.split(' ');
+    if (names.length > 1) {
+      return names[0][0] + names[names.length - 1][0];
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
 
   return (
     <div
@@ -311,13 +328,13 @@ export default function DashboardLayout({
             </Link>
           </div>
           <div className="flex items-center gap-2">
-            <p className="text-sm font-medium">John Doe</p>
+            <p className="text-sm font-medium">{userName}</p>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="secondary" size="icon" className="rounded-full">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="https://picsum.photos/seed/1/200/200" alt="User Avatar" />
-                    <AvatarFallback>JD</AvatarFallback>
+                    <AvatarFallback>{getInitials(userName)}</AvatarFallback>
                   </Avatar>
                   <span className="sr-only">Toggle user menu</span>
                 </Button>

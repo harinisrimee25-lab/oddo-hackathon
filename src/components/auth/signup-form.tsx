@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -46,6 +47,10 @@ export function SignUpForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     console.log(values);
+
+    // In a real app, you'd send this to your server.
+    // For this prototype, we'll save the name to localStorage.
+    localStorage.setItem('userName', values.name);
 
     setTimeout(() => {
       setIsSubmitting(false);

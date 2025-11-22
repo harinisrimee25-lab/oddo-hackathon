@@ -20,6 +20,8 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { PlusCircle } from 'lucide-react';
 
 const deliveriesData = [
   {
@@ -106,10 +108,18 @@ export default function DeliveriesPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Deliveries</CardTitle>
-        <CardDescription>
-          Track outgoing shipments and their status.
-        </CardDescription>
+        <div className="flex items-center justify-between">
+            <div>
+                <CardTitle>Deliveries</CardTitle>
+                <CardDescription>
+                Track outgoing shipments and their status.
+                </CardDescription>
+            </div>
+            <Button>
+                <PlusCircle className="mr-2 h-4 w-4" />
+                New Delivery
+            </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="pending">

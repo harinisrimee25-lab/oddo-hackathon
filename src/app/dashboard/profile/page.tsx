@@ -28,10 +28,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const profileFormSchema = z.object({
-  name: z.string().min(2, {
-    message: 'Name must be at least 2 characters.',
+  shopName: z.string().min(2, {
+    message: 'Shop name must be at least 2 characters.',
   }),
   email: z.string().email(),
   bio: z.string().max(160).optional(),
@@ -41,7 +42,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 // This can be fetched from an API in a real app
 const defaultValues: Partial<ProfileFormValues> = {
-  name: 'John Doe',
+  shopName: 'My Awesome Shop',
   email: 'john.doe@example.com',
   bio: 'I am a stock master in the making!',
 };
@@ -72,20 +73,32 @@ export default function ProfilePage() {
       <CardHeader>
         <CardTitle>My Profile</CardTitle>
         <CardDescription>
-          Update your profile information.
+          Update your shop information and personal details.
         </CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
+            <div className="flex items-center gap-4">
+                <Avatar className="h-20 w-20">
+                    <AvatarImage src="https://picsum.photos/seed/1/200/200" alt="Shop Logo" />
+                    <AvatarFallback>SS</AvatarFallback>
+                </Avatar>
+                <div className="grid gap-1.5">
+                    <h3 className="text-lg font-semibold">Shop Logo</h3>
+                    <p className="text-sm text-muted-foreground">
+                        This is your shop's public display image.
+                    </p>
+                </div>
+            </div>
             <FormField
               control={form.control}
-              name="name"
+              name="shopName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Shop Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your name" {...field} />
+                    <Input placeholder="Your shop name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,7 +128,7 @@ export default function ProfilePage() {
                   <FormLabel>Bio</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Tell us a little bit about yourself"
+                      placeholder="Tell us a little bit about your shop"
                       className="resize-none"
                       {...field}
                     />

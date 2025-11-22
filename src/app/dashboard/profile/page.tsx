@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Loader2, Edit } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -50,6 +51,7 @@ export default function ProfilePage() {
     email: 'john.doe@example.com',
   });
   const { toast } = useToast();
+  const router = useRouter();
   
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -81,6 +83,17 @@ export default function ProfilePage() {
           description: 'Your profile has been updated successfully.',
         });
       }, 2000);
+  }
+
+  const handleSignOut = () => {
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    window.dispatchEvent(new Event('storage'));
+    toast({
+        title: 'Logout Successful',
+        description: 'You have been successfully logged out.',
+    });
+    router.push('/');
   }
 
   const getInitials = (name: string) => {
@@ -181,7 +194,7 @@ export default function ProfilePage() {
                     }}>Cancel</Button>
                 </>
             ) : (
-                <Button variant="destructive">Sign Out</Button>
+                <Button variant="destructive" type="button" onClick={handleSignOut}>Sign Out</Button>
             )}
           </CardFooter>
         </form>

@@ -14,6 +14,7 @@ import {
   Receipt,
   Truck,
   SlidersHorizontal,
+  Menu,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -59,26 +60,34 @@ export default function DashboardLayout({
         'grid min-h-screen w-full',
         isSidebarOpen
           ? 'md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'
-          : 'md:grid-cols-[0px_1fr]'
+          : 'md:grid-cols-[68px_1fr]'
       )}
     >
       <div
         className={cn(
           'hidden border-r bg-muted/40 md:block transition-all',
-          isSidebarOpen ? 'w-full' : 'w-0'
+          isSidebarOpen ? 'w-full' : 'w-[68px]'
         )}
       >
         <div
           className={cn(
             'flex h-full max-h-screen flex-col gap-2',
-            isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           )}
         >
-          <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <Link href="/" className="flex items-center gap-2 font-semibold">
+          <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 justify-between">
+            <Link href="/" className={cn("flex items-center gap-2 font-semibold", !isSidebarOpen && "hidden")}>
               <Package2 className="h-6 w-6" />
               <span className="">Stock Master</span>
             </Link>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
+              <Menu className="h-4 w-4" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </Button>
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
@@ -87,17 +96,17 @@ export default function DashboardLayout({
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Home className="h-4 w-4" />
-                Dashboard
+                {isSidebarOpen && 'Dashboard'}
               </Link>
               <Collapsible open={isOperationsOpen} onOpenChange={setIsOperationsOpen}>
                 <CollapsibleTrigger className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                     <Cpu className="h-4 w-4" />
-                    Operations
+                    {isSidebarOpen && 'Operations'}
                   </div>
-                  <ChevronDown className={`h-4 w-4 transition-transform ${isOperationsOpen ? 'rotate-180' : ''}`} />
+                  {isSidebarOpen && <ChevronDown className={`h-4 w-4 transition-transform ${isOperationsOpen ? 'rotate-180' : ''}`} />}
                 </CollapsibleTrigger>
-                <CollapsibleContent className="pl-8">
+                {isSidebarOpen && <CollapsibleContent className="pl-8">
                   <nav className="grid gap-y-2">
                     <Link
                       href="/dashboard/receipts"
@@ -121,32 +130,32 @@ export default function DashboardLayout({
                       Adjustments
                     </Link>
                   </nav>
-                </CollapsibleContent>
+                </CollapsibleContent>}
               </Collapsible>
               <Link
                 href="/dashboard/stock"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Package className="h-4 w-4" />
-                Stock
+                {isSidebarOpen && 'Stock'}
               </Link>
               <Link
                 href="/dashboard/move-history"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <History className="h-4 w-4" />
-                Move History
+                {isSidebarOpen && 'Move History'}
               </Link>
               <Link
                 href="#"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Settings className="h-4 w-4" />
-                Settings
+                {isSidebarOpen && 'Settings'}
               </Link>
             </nav>
           </div>
-          <div className="mt-auto p-4">
+          {isSidebarOpen && <div className="mt-auto p-4">
             <Card x-chunk="dashboard-02-chunk-0">
               <CardHeader className="p-2 pt-0 md:p-4">
                 <CardTitle>Upgrade to Pro</CardTitle>
@@ -161,7 +170,7 @@ export default function DashboardLayout({
                 </Button>
               </CardContent>
             </Card>
-          </div>
+          </div>}
         </div>
       </div>
       <div className="flex flex-col">
@@ -267,15 +276,6 @@ export default function DashboardLayout({
               </div>
             </SheetContent>
           </Sheet>
-          <Button
-            variant="outline"
-            size="icon"
-            className="shrink-0 hidden md:flex"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            <PanelLeft className="h-5 w-5" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
           <div className="w-full flex-1">
             <form>
               <div className="relative">

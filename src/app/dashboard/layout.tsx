@@ -19,6 +19,8 @@ import {
   LogOut,
   ArrowRightLeft,
   Info,
+  Moon,
+  Sun,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -44,6 +46,8 @@ import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useRouter, usePathname } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 export default function DashboardLayout({
   children,
@@ -64,6 +68,26 @@ export default function DashboardLayout({
   const [userName, setUserName] = React.useState('John Doe');
   const router = useRouter();
   const { toast } = useToast();
+  const [isDarkMode, setIsDarkMode] = React.useState(false);
+
+  React.useEffect(() => {
+    const root = window.document.documentElement;
+    if (localStorage.getItem('theme') === 'dark') {
+      root.classList.add('dark');
+      setIsDarkMode(true);
+    } else {
+      root.classList.remove('dark');
+      setIsDarkMode(false);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const root = window.document.documentElement;
+    const newTheme = root.classList.contains('dark') ? 'light' : 'dark';
+    root.classList.toggle('dark');
+    localStorage.setItem('theme', newTheme);
+    setIsDarkMode(newTheme === 'dark');
+  };
 
   const updateName = () => {
     const storedName = localStorage.getItem('userName');
@@ -123,7 +147,7 @@ export default function DashboardLayout({
             'flex h-full max-h-screen flex-col gap-2',
           )}
         >
-          <div className={cn("flex h-14 items-center border-b border-sidebar-border px-4 lg:h-[60px] lg:px-6", isSidebarOpen ? "justify-start" : "justify-center")}>
+          <div className={cn("flex h-14 items-center border-b border-sidebar-border px-4 lg:h-[60px] lg:px-6 gap-2", isSidebarOpen ? "justify-between" : "justify-center")}>
             <Button
               variant="outline"
               size="icon"
@@ -133,6 +157,14 @@ export default function DashboardLayout({
               <Menu className="h-4 w-4" />
               <span className="sr-only">Toggle navigation menu</span>
             </Button>
+            {isSidebarOpen && (
+              <div className="flex items-center space-x-2">
+                <Switch id="theme-switch-desktop" checked={isDarkMode} onCheckedChange={toggleTheme} />
+                <Label htmlFor="theme-switch-desktop" className='text-sidebar-foreground'>
+                  {isDarkMode ? <Moon className='h-4 w-4' /> : <Sun className='h-4 w-4' />}
+                </Label>
+              </div>
+            )}
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
@@ -371,6 +403,12 @@ export default function DashboardLayout({
                   </CollapsibleContent>
                 </Collapsible>
               </nav>
+              <div className="mt-auto p-4">
+                <div className="flex items-center space-x-2">
+                    <Switch id="theme-switch-mobile" checked={isDarkMode} onCheckedChange={toggleTheme} />
+                    <Label htmlFor="theme-switch-mobile">Switch Mode</Label>
+                </div>
+              </div>
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1">
@@ -414,3 +452,5 @@ export default function DashboardLayout({
     </div>
   );
 }
+
+    

@@ -27,9 +27,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { EditMoveHistoryForm } from '@/components/dashboard/edit-move-history-form';
+import { NewMoveHistoryForm } from '@/components/dashboard/new-move-history-form';
 
   const initialMoveHistoryData = [
     {
@@ -128,7 +129,8 @@ import { EditMoveHistoryForm } from '@/components/dashboard/edit-move-history-fo
     const [moveHistory, setMoveHistory] = useState(initialMoveHistoryData);
     const [filterStatus, setFilterStatus] = useState<MoveStatus>('All');
     const [selectedMove, setSelectedMove] = useState<MoveHistory | null>(null);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const { toast } = useToast();
     
     const filteredMoves = moveHistory.filter((d) => {
@@ -138,12 +140,12 @@ import { EditMoveHistoryForm } from '@/components/dashboard/edit-move-history-fo
 
     const handleEditClick = (move: MoveHistory) => {
         setSelectedMove(move);
-        setIsDialogOpen(true);
+        setIsEditDialogOpen(true);
     }
 
     const handleUpdate = (updatedMove: MoveHistory) => {
         setMoveHistory(prev => prev.map(m => m.reference === updatedMove.reference ? updatedMove : m));
-        setIsDialogOpen(false);
+        setIsEditDialogOpen(false);
         toast({
             title: 'Move Updated',
             description: `Move with reference ${updatedMove.reference} has been updated.`,
@@ -152,10 +154,19 @@ import { EditMoveHistoryForm } from '@/components/dashboard/edit-move-history-fo
 
     const handleDelete = (moveToDelete: MoveHistory) => {
         setMoveHistory(prev => prev.filter(m => m.reference !== moveToDelete.reference));
-        setIsDialogOpen(false);
+        setIsEditDialogOpen(false);
         toast({
             title: 'Move Deleted',
             description: `Move with reference ${moveToDelete.reference} has been deleted.`,
+        });
+    }
+
+    const handleAddMove = (newMove: MoveHistory) => {
+        setMoveHistory(prev => [newMove, ...prev]);
+        setIsAddDialogOpen(false);
+        toast({
+            title: 'Move Added',
+            description: `New move with reference ${newMove.reference} has been added.`,
         });
     }
 
@@ -188,10 +199,20 @@ import { EditMoveHistoryForm } from '@/components/dashboard/edit-move-history-fo
                             </DropdownMenuRadioGroup>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    <Button>
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        New Movement
-                    </Button>
+                    <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+                        <DialogTrigger asChild>
+                            <Button>
+                                <PlusCircle className="mr-2 h-4 w-4" />
+                                New Movement
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Create New Movement</DialogTitle>
+                            </DialogHeader>
+                            <NewMoveHistoryForm onAddMove={handleAddMove} />
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </div>
         </CardHeader>
@@ -199,7 +220,7 @@ import { EditMoveHistoryForm } from '@/components/dashboard/edit-move-history-fo
             <MoveHistoryTable moves={filteredMoves} onEdit={handleEditClick} />
         </CardContent>
       </Card>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Edit Move: {selectedMove?.reference}</DialogTitle>

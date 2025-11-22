@@ -138,7 +138,7 @@ export default function DashboardLayout({
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Link
                 href="/dashboard"
-                className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary", isActive('/dashboard') && 'text-primary bg-muted')}
+                className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isActive('/dashboard') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
               >
                 <Home className="h-4 w-4" />
                 {isSidebarOpen && 'Dashboard'}
@@ -155,28 +155,28 @@ export default function DashboardLayout({
                   <nav className="grid gap-y-2">
                     <Link
                       href="/dashboard/receipts"
-                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary", isActive('/dashboard/receipts') && 'text-primary bg-muted')}
+                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isActive('/dashboard/receipts') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
                     >
                       <Receipt className="h-4 w-4" />
                       Receipts
                     </Link>
                     <Link
                       href="/dashboard/deliveries"
-                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary", isActive('/dashboard/deliveries') && 'text-primary bg-muted')}
+                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isActive('/dashboard/deliveries') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
                     >
                       <Truck className="h-4 w-4" />
                       Delivery
                     </Link>
                     <Link
                       href="/dashboard/adjustments"
-                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary", isActive('/dashboard/adjustments') && 'text-primary bg-muted')}
+                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isActive('/dashboard/adjustments') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
                     >
                       <SlidersHorizontal className="h-4 w-4" />
                       Adjustments
                     </Link>
                      <Link
                       href="/dashboard/internal-transfers"
-                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary", isActive('/dashboard/internal-transfers') && 'text-primary bg-muted')}
+                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isActive('/dashboard/internal-transfers') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
                     >
                       <ArrowRightLeft className="h-4 w-4" />
                       Internal Transfers
@@ -186,21 +186,21 @@ export default function DashboardLayout({
               </Collapsible>
               <Link
                 href="/dashboard/stock"
-                className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary", isActive('/dashboard/stock') && 'text-primary bg-muted')}
+                className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isActive('/dashboard/stock') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
               >
                 <Package className="h-4 w-4" />
                 {isSidebarOpen && 'Stock'}
               </Link>
               <Link
                 href="/dashboard/move-history"
-                className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary", isActive('/dashboard/move-history') && 'text-primary bg-muted')}
+                className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isActive('/dashboard/move-history') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
               >
                 <History className="h-4 w-4" />
                 {isSidebarOpen && 'Move History'}
               </Link>
               <Link
                 href="/dashboard/profile"
-                className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary", isActive('/dashboard/profile') && 'text-primary bg-muted')}
+                className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isActive('/dashboard/profile') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
               >
                 <User className="h-4 w-4" />
                 {isSidebarOpen && 'My Profile'}
@@ -217,14 +217,14 @@ export default function DashboardLayout({
                   <nav className="grid gap-y-2">
                     <Link
                       href="/dashboard/settings/warehouse"
-                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary", pathname.startsWith('/dashboard/settings/warehouse') && 'text-primary bg-muted')}
+                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", pathname.startsWith('/dashboard/settings/warehouse') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
                     >
                       <Warehouse className="h-4 w-4" />
                       Warehouse
                     </Link>
                     <Link
                       href="/dashboard/settings/instructions"
-                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary", isActive('/dashboard/settings/instructions') && 'text-primary bg-muted')}
+                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isActive('/dashboard/settings/instructions') ? 'text-primary bg-muted' : 'text-sidebar-foreground')}
                     >
                       <Info className="h-4 w-4" />
                       Instructions

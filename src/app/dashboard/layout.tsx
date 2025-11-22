@@ -145,7 +145,7 @@ export default function DashboardLayout({
               </Link>
               <Collapsible open={isOperationsOpen} onOpenChange={setIsOperationsOpen}>
                 <CollapsibleTrigger className="flex items-center justify-between w-full">
-                  <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary">
+                  <div className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isOperationsOpen ? "text-primary" : "text-sidebar-foreground")}>
                     <Cpu className="h-4 w-4" />
                     {isSidebarOpen && 'Operations'}
                   </div>
@@ -207,7 +207,7 @@ export default function DashboardLayout({
               </Link>
               <Collapsible open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
                 <CollapsibleTrigger className="flex items-center justify-between w-full">
-                  <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary">
+                  <div className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary", isSettingsOpen ? "text-primary" : "text-sidebar-foreground")}>
                     <Settings className="h-4 w-4" />
                     {isSidebarOpen && 'Settings'}
                   </div>
@@ -232,6 +232,7 @@ export default function DashboardLayout({
                     <Link
                       href="/"
                       className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all hover:text-primary"
+                      onClick={handleLogout}
                     >
                       <LogOut className="h-4 w-4" />
                       Sign Out
@@ -361,6 +362,7 @@ export default function DashboardLayout({
                         <Link
                         href="/"
                         className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                        onClick={handleLogout}
                         >
                         <LogOut className="h-5 w-5" />
                         Sign Out

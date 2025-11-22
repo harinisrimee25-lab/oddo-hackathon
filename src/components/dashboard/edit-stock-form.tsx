@@ -29,6 +29,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const editStockFormSchema = z.object({
     product: z.string().min(2, {
@@ -37,6 +38,7 @@ const editStockFormSchema = z.object({
     onHand: z.coerce.number().min(0, {
         message: 'On-hand quantity must be 0 or greater.',
     }),
+    status: z.enum(['in-stock', 'out-of-stock']),
 });
 
 type EditStockFormValues = z.infer<typeof editStockFormSchema>;
@@ -55,9 +57,20 @@ export function EditStockForm({ product, onUpdate, onDelete }: EditStockFormProp
         defaultValues: {
             product: product.product,
             onHand: product.onHand,
+            status: product.onHand > 0 ? 'in-stock' : 'out-of-stock',
         },
         mode: 'onChange',
     });
+
+    const status = form.watch('status');
+
+    React.useEffect(() => {
+        if (status === 'out-of-stock') {
+            form.setValue('onHand', 0);
+        } else if (status === 'in-stock' && form.getValues('onHand') === 0) {
+            form.setValue('onHand', 1);
+        }
+    }, [status, form]);
 
     function onSubmit(data: EditStockFormValues) {
         setIsSubmitting(true);
@@ -95,6 +108,27 @@ export function EditStockForm({ product, onUpdate, onDelete }: EditStockFormProp
                         </FormItem>
                     )}
                 />
+                 <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Status</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select a status" />
+                                </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                <SelectItem value="in-stock">In Stock</SelectItem>
+                                <SelectItem value="out-of-stock">Out of Stock</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
                 <FormField
                     control={form.control}
                     name="onHand"
@@ -102,7 +136,7 @@ export function EditStockForm({ product, onUpdate, onDelete }: EditStockFormProp
                         <FormItem>
                             <FormLabel>On-Hand Quantity</FormLabel>
                             <FormControl>
-                                <Input type="number" {...field} />
+                                <Input type="number" {...field} disabled={status === 'out-of-stock'} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

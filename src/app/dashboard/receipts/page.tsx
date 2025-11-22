@@ -19,6 +19,8 @@ import {
     TabsList,
     TabsTrigger,
   } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { PlusCircle } from 'lucide-react';
   
   const salesData = [
     {
@@ -58,8 +60,16 @@ import {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Receipts</CardTitle>
-          <CardDescription>Track sales and purchases.</CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Receipts</CardTitle>
+              <CardDescription>Track sales and purchases.</CardDescription>
+            </div>
+            <Button>
+                <PlusCircle className="mr-2 h-4 w-4" />
+                New Receipt
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="sales">
@@ -120,6 +130,7 @@ import {
                       {purchaseData.map((item) => (
                         <TableRow key={item.productName}>
                           <TableCell className="font-medium">{item.productName}</TableCell>
+
                           <TableCell>{item.date}</TableCell>
                           <TableCell className="text-right">{item.quantity}</TableCell>
                           <TableCell className="text-right">${item.pricePerItem.toFixed(2)}</TableCell>
@@ -136,4 +147,3 @@ import {
       </Card>
     );
   }
-  

@@ -43,6 +43,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import React from 'react';
+import { cn } from '@/lib/utils';
 
 export default function DashboardLayout({
   children,
@@ -50,11 +51,29 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isOperationsOpen, setIsOperationsOpen] = React.useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
 
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <div className="hidden border-r bg-muted/40 md:block">
-        <div className="flex h-full max-h-screen flex-col gap-2">
+    <div
+      className={cn(
+        'grid min-h-screen w-full',
+        isSidebarOpen
+          ? 'md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'
+          : 'md:grid-cols-[0px_1fr]'
+      )}
+    >
+      <div
+        className={cn(
+          'hidden border-r bg-muted/40 md:block transition-all',
+          isSidebarOpen ? 'w-full' : 'w-0'
+        )}
+      >
+        <div
+          className={cn(
+            'flex h-full max-h-screen flex-col gap-2',
+            isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          )}
+        >
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
               <Package2 className="h-6 w-6" />
@@ -248,6 +267,15 @@ export default function DashboardLayout({
               </div>
             </SheetContent>
           </Sheet>
+          <Button
+            variant="outline"
+            size="icon"
+            className="shrink-0 hidden md:flex"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            <PanelLeft className="h-5 w-5" />
+            <span className="sr-only">Toggle navigation menu</span>
+          </Button>
           <div className="w-full flex-1">
             <form>
               <div className="relative">

@@ -38,7 +38,6 @@ const profileFormSchema = z.object({
     message: 'Shop name must be at least 2 characters.',
   }),
   email: z.string().email(),
-  bio: z.string().max(160).optional(),
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
@@ -48,7 +47,6 @@ const defaultValues: Partial<ProfileFormValues> = {
   ownerName: 'John Doe',
   shopName: 'My Awesome Shop',
   email: 'john.doe@example.com',
-  bio: 'I am a stock master in the making!',
 };
 
 export default function ProfilePage() {
@@ -146,27 +144,6 @@ export default function ProfilePage() {
                   ) : (
                     <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
                   )}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="bio"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Bio</FormLabel>
-                   {isEditing ? (
-                    <FormControl>
-                        <Textarea
-                        placeholder="Tell us a little bit about your shop"
-                        className="resize-none"
-                        {...field}
-                        />
-                    </FormControl>
-                   ) : (
-                    <p className="text-base font-bold text-foreground pt-2">{field.value}</p>
-                   )}
                   <FormMessage />
                 </FormItem>
               )}

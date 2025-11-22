@@ -16,8 +16,8 @@ import {
     CardTitle,
   } from "@/components/ui/card"
 import React from "react";
-import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
   
   const allProducts = [
     {
@@ -92,38 +92,32 @@ import { Badge } from "@/components/ui/badge";
     )
   }
   
-  function StockPageContent() {
-    const searchParams = useSearchParams();
-    const filter = searchParams.get('filter');
-
-    const displayedProducts = filter === 'out-of-stock' 
-        ? allProducts.filter(p => p.onHand === 0)
-        : allProducts.filter(p => p.onHand > 0);
-
-    const cardTitle = filter === 'out-of-stock' ? 'Out of Stock Products' : 'Product Stock';
-    const cardDescription = filter === 'out-of-stock'
-        ? 'Products that need to be restocked.'
-        : 'An overview of your current product inventory.';
+  export default function StockPage() {
+    const inStockProducts = allProducts.filter(p => p.onHand > 0);
+    const outOfStockProducts = allProducts.filter(p => p.onHand === 0);
 
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{cardTitle}</CardTitle>
+          <CardTitle>Product Stock</CardTitle>
           <CardDescription>
-            {cardDescription}
+            An overview of your current product inventory.
           </CardDescription>
         </CardHeader>
         <CardContent>
-            <ProductStockTable products={displayedProducts} />
+            <Tabs defaultValue="in-stock">
+                <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="in-stock">In Stock</TabsTrigger>
+                    <TabsTrigger value="out-of-stock">Out of Stock</TabsTrigger>
+                </TabsList>
+                <TabsContent value="in-stock">
+                    <ProductStockTable products={inStockProducts} />
+                </TabsContent>
+                <TabsContent value="out-of-stock">
+                    <ProductStockTable products={outOfStockProducts} />
+                </TabsContent>
+            </Tabs>
         </CardContent>
       </Card>
-    )
-  }
-
-  export default function StockPage() {
-    return (
-      <React.Suspense fallback={<div>Loading...</div>}>
-        <StockPageContent />
-      </React.Suspense>
     )
   }

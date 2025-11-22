@@ -75,6 +75,36 @@ type Receipt = {
     barcodeNumber: string;
 };
 
+function ReceiptTable({ data }: { data: Receipt[] }) {
+    return (
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>Product Name</TableHead>
+                    <TableHead>Barcode Number</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead className="text-right">Quantity</TableHead>
+                    <TableHead className="text-right">Price Per Item</TableHead>
+                    <TableHead className="text-right">Total Amount</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {data.map((item) => (
+                    <TableRow key={item.productName + item.date}>
+                        <TableCell className="font-medium">{item.productName}</TableCell>
+                        <TableCell>{item.barcodeNumber}</TableCell>
+                        <TableCell>{item.date}</TableCell>
+                        <TableCell className="text-right">{item.quantity}</TableCell>
+                        <TableCell className="text-right">${item.pricePerItem.toFixed(2)}</TableCell>
+                        <TableCell className="text-right">${item.totalAmount.toFixed(2)}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    );
+}
+
+
 export default function ReceiptsPage() {
     const [salesData, setSalesData] = React.useState(initialSalesData);
     const [purchaseData, setPurchaseData] = React.useState(initialPurchaseData);
@@ -132,40 +162,7 @@ export default function ReceiptsPage() {
                 <CardDescription>Recent sales transactions.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Product Name</TableHead>
-                      <TableHead>Barcode Number</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead className="text-right">Quantity</TableHead>
-                      <TableHead className="text-right">
-                        Price Per Item
-                      </TableHead>
-                      <TableHead className="text-right">Total Amount</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {salesData.map((item) => (
-                      <TableRow key={item.productName + item.date}>
-                        <TableCell className="font-medium">
-                          {item.productName}
-                        </TableCell>
-                        <TableCell>{item.barcodeNumber}</TableCell>
-                        <TableCell>{item.date}</TableCell>
-                        <TableCell className="text-right">
-                          {item.quantity}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          ${item.pricePerItem.toFixed(2)}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          ${item.totalAmount.toFixed(2)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <ReceiptTable data={salesData} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -178,40 +175,7 @@ export default function ReceiptsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Product Name</TableHead>
-                      <TableHead>Barcode Number</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead className="text-right">Quantity</TableHead>
-                      <TableHead className="text-right">
-                        Price Per Item
-                      </TableHead>
-                      <TableHead className="text-right">Total Amount</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {purchaseData.map((item) => (
-                      <TableRow key={item.productName + item.date}>
-                        <TableCell className="font-medium">
-                          {item.productName}
-                        </TableCell>
-                        <TableCell>{item.barcodeNumber}</TableCell>
-                        <TableCell>{item.date}</TableCell>
-                        <TableCell className="text-right">
-                          {item.quantity}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          ${item.pricePerItem.toFixed(2)}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          ${item.totalAmount.toFixed(2)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <ReceiptTable data={purchaseData} />
               </CardContent>
             </Card>
           </TabsContent>
